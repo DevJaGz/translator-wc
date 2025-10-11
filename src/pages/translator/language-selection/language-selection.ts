@@ -13,12 +13,16 @@ export class LanguageSelection extends LitElement {
   }
 
   render() {
-    return html`<form
-      @language-selected=${(event: CustomEvent) =>
-        this.#service.setFromSelectorLanguage(event.detail)}>
+    return html`<div class="language-selection">
       <language-selector
+      class="language-selection__selector"
         .languageCode="${this.#service.dto.fromSelector
           .languageCode}"></language-selector>
-    </form>`;
+      <button class="btn">⇄</button>
+      <language-selector
+        class="language-selection__selector"
+        .languageCode="${this.#service.dto.toSelector
+          .languageCode}"></language-selector>
+    </div>`;
   }
 }

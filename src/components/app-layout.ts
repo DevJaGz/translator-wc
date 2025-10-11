@@ -9,7 +9,7 @@ export class AppLayout extends LitElement {
 
   render() {
     return html`
-      <div class="max-w-7xl mx-auto mt-10 sm:mt-14">
+      <div class="max-w-7xl mx-auto mt-8 ">
         <slot></slot>
       </div>
     `;

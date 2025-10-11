@@ -37,7 +37,7 @@ export class LanguageSelector extends LitElement {
         @change=${(event: Event) => this.handleSelection(event)}
         id="langauge"
         name="langauge"
-        class="select select-primary">
+        class="select select-primary w-full">
         ${this.#service.dto.languages.map(
           (language) =>
             html`<option
