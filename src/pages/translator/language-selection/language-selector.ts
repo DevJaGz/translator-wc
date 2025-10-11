@@ -3,9 +3,9 @@ import { customElement, property } from 'lit/decorators.js';
 import { LanguageCode } from '../config';
 import { translatorService } from '../translator.service';
 
-@customElement('translator-selector')
-export class TranslatorSelector extends LitElement {
-  @property({ type: String})
+@customElement('language-selector')
+export class LanguageSelector extends LitElement {
+  @property({ type: String })
   languageCode = '';
 
   readonly #service = translatorService;
@@ -33,22 +33,20 @@ export class TranslatorSelector extends LitElement {
 
   render() {
     return html`
-      <form>
-        <select
-          @change=${(event: Event) => this.handleSelection(event)}
-          id="langauge"
-          name="langauge"
-          class="select select-primary">
-          ${this.#service.dto.languages.map(
-            (language) =>
-              html`<option
-                .selected="${this.languageCode === language.code}"
-                value=${language.code}>
-                ${language.name}
-              </option>`,
-          )}
-        </select>
-      </form>
+      <select
+        @change=${(event: Event) => this.handleSelection(event)}
+        id="langauge"
+        name="langauge"
+        class="select select-primary">
+        ${this.#service.dto.languages.map(
+          (language) =>
+            html`<option
+              .selected="${this.languageCode === language.code}"
+              value=${language.code}>
+              ${language.name}
+            </option>`,
+        )}
+      </select>
     `;
   }
 }

@@ -1,8 +1,8 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import '../../components/app-layout';
-import './translator-selector/translator-selector';
 import { translatorService } from './translator.service';
+import '../../components/app-layout';
+import './language-selection/language-selection';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
@@ -15,12 +15,8 @@ export class TranslatorPage extends LitElement {
 
   render() {
     return html`
-      <app-layout
-        @language-selected=${(event: CustomEvent) =>
-          this.#service.setFromSelectorLanguage(event.detail)}>
-        <translator-selector
-          .languageCode="${this.#service.dto.fromSelector
-            .languageCode}"></translator-selector>
+      <app-layout>
+        <language-selection></language-selection>
       </app-layout>
     `;
   }
