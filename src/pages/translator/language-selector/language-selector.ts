@@ -3,10 +3,24 @@ import { customElement, property } from 'lit/decorators.js';
 import { LanguageCode } from '../config';
 import { translatorService } from '../translator.service';
 
+export const SelectorType = {
+  FROM: 'fromSelector',
+  TO: 'toSelector',
+} as const;
+export type SelectorType = (typeof SelectorType)[keyof typeof SelectorType];
+
+export interface LanguageSelectorEvent {
+  selectedLanguage: LanguageCode;
+  selectorType: SelectorType;
+}
+
 @customElement('language-selector')
 export class LanguageSelector extends LitElement {
   @property({ type: String })
   languageCode = '';
+
+  @property({ type: String })
+  selectorType: SelectorType = SelectorType.FROM;
 
   readonly #service = translatorService;
 
@@ -19,10 +33,13 @@ export class LanguageSelector extends LitElement {
     const selectElement = event.target as HTMLSelectElement;
     const selectedLanguage = selectElement.value as LanguageCode;
 
-    const languageSelectedEvent = new CustomEvent<LanguageCode>(
+    const languageSelectedEvent = new CustomEvent<LanguageSelectorEvent>(
       'language-selected',
       {
-        detail: selectedLanguage as LanguageCode,
+        detail: {
+          selectedLanguage: selectedLanguage as LanguageCode,
+          selectorType: this.selectorType,
+        },
         bubbles: true,
         composed: true,
       },
@@ -34,9 +51,9 @@ export class LanguageSelector extends LitElement {
   render() {
     return html`
       <select
-        id="langauge"
-        name="langauge"
-        class="select select-primary w-full">
+        class="select select-primary w-full"
+        .id="${this.selectorType}"
+        .name="${this.selectorType}">
         ${this.#service.dto.languages.map(
           (language) =>
             html`<option

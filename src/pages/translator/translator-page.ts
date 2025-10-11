@@ -5,6 +5,10 @@ import '../../components/app-layout';
 import './translator-input/transator-input';
 import './translator-output/translator-output';
 import './language-selector/language-selector';
+import {
+  LanguageSelectorEvent,
+  SelectorType,
+} from './language-selector/language-selector';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
@@ -14,18 +18,37 @@ export class TranslatorPage extends LitElement {
     return this;
   }
 
+  onLanguageSelected(event: CustomEvent<LanguageSelectorEvent>) {
+    const { selectorType, selectedLanguage } = event.detail;
+
+    if (selectorType === SelectorType.FROM) {
+      this.#service.setFromSelectorLanguage(selectedLanguage);
+      return;
+    }
+
+    this.#service.setToSelectorLanguage(selectedLanguage);
+  }
+
   render() {
     return html`
       <app-layout>
-        <form>
+        <form
+          @language-selected="${(event: CustomEvent<LanguageSelectorEvent>) =>
+            this.onLanguageSelected(event)}">
           <div class="language-selection">
             <language-selector
               class="language-selection__selector"
+              .selectorType="${SelectorType.FROM}"
               .languageCode="${this.#service.dto.fromSelector
                 .languageCode}"></language-selector>
-            <button class="btn">⇄</button>
+            <button
+              type="button"
+              class="btn">
+              ⇄
+            </button>
             <language-selector
               class="language-selection__selector"
+              .selectorType="${SelectorType.TO}"
               .languageCode="${this.#service.dto.toSelector
                 .languageCode}"></language-selector>
           </div>
