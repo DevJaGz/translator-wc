@@ -1,4 +1,4 @@
-export const CodeLanguage = {
+export const LanguageCode = {
   'spanish-spain': 'es-ES',
   'english-united-states': 'en-US',
   'french-france': 'fr-FR',
@@ -11,54 +11,54 @@ export const CodeLanguage = {
   'auto-detect': 'auto',
 } as const;
 
-export type CodeLanguage = (typeof CodeLanguage)[keyof typeof CodeLanguage];
+export type LanguageCode = (typeof LanguageCode)[keyof typeof LanguageCode];
 
 export interface Language {
   name: string;
-  code: CodeLanguage;
+  code: LanguageCode;
 }
 
 export class TranslatorConfig {
   static languages = [
     {
       name: 'Auto Detect',
-      code: CodeLanguage['auto-detect'],
+      code: LanguageCode['auto-detect'],
     },
     {
       name: 'Spanish (Spain)',
-      code: CodeLanguage['spanish-spain'],
+      code: LanguageCode['spanish-spain'],
     },
     {
       name: 'English (United States)',
-      code: CodeLanguage['english-united-states'],
+      code: LanguageCode['english-united-states'],
     },
     {
       name: 'French (France)',
-      code: CodeLanguage['french-france'],
+      code: LanguageCode['french-france'],
     },
     {
       name: 'German (Germany)',
-      code: CodeLanguage['german-germany'],
+      code: LanguageCode['german-germany'],
     },
     {
       name: 'Italian (Italy)',
-      code: CodeLanguage['italian-italy'],
+      code: LanguageCode['italian-italy'],
     },
     {
       name: 'Portuguese (Brazil)',
-      code: CodeLanguage['portuguese-brazil'],
+      code: LanguageCode['portuguese-brazil'],
     },
     {
       name: 'Portuguese (Portugal)',
-      code: CodeLanguage['portuguese-portugal'],
+      code: LanguageCode['portuguese-portugal'],
     },
     {
       name: 'Russian (Russia)',
-      code: CodeLanguage['russian-russia'],
+      code: LanguageCode['russian-russia'],
     },
     {
       name: 'Chinese (China)',
-      code: CodeLanguage['chinese-china'],
+      code: LanguageCode['chinese-china'],
     },
   ];
 }
