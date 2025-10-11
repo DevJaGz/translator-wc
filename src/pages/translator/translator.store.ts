@@ -20,21 +20,23 @@ export const INITIAL_STATE: TranslatorState = {
   languages: TranslatorConfig.languages,
 };
 
-type Observer = (state: TranslatorState) => void;
+export type Observer = (state: TranslatorState) => void;
 
-interface SubscriptionOptions {
+export interface SubscriptionOptions {
   notifyImmediately?: boolean;
   onlyOnce?: boolean;
 }
 
-interface Subscription {
+export interface Subscription {
   observer: Observer;
   options?: SubscriptionOptions;
 }
 
 export class TranslatorStoreReducer {
   #state = INITIAL_STATE;
-  state = this.#state as DeepReadonly<TranslatorState>;
+  get state() {
+    return this.#state as DeepReadonly<TranslatorState>;
+  }
 
   setFromSelectorLanguage(language: LanguageCode) {
     this.setState({

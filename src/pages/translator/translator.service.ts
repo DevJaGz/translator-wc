@@ -14,6 +14,14 @@ class TranslatorService {
     };
   }
 
+  get listenChanges() {
+    return this.#store.subscribe.bind(this.#store);
+  }
+
+  get unlistenChanges() {
+    return this.#store.unsubscribe.bind(this.#store);
+  }
+
   setFromSelectorLanguage(language: LanguageCode) {
     this.#store.setFromSelectorLanguage(language);
   }

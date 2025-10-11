@@ -51,6 +51,7 @@ export class LanguageSelector extends LitElement {
   render() {
     return html`
       <select
+        @change="${this.handleSelection}"
         class="select select-primary w-full"
         .id="${this.selectorType}"
         .name="${this.selectorType}">
