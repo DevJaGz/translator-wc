@@ -27,13 +27,11 @@ export const styles = css`
   main {
     flex: 1;
     position: relative;
-    overflow: hidden;
   }
 
   main ::slotted(*) {
     position: absolute;
     inset: 0;
-    visibility: hidden;
   }
 
   main ::slotted([state='active']) {

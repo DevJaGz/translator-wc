@@ -9,6 +9,6 @@ export class TranslatorInput extends LitElement {
   }
 
   render() {
-    return html`input`;
+    return html`TranslatorInput works`;
   }
 }

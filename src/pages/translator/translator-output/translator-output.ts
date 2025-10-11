@@ -9,6 +9,6 @@ export class TranslatorOutput extends LitElement {
   }
 
   render() {
-    return html`TranslatorOutput works`;
+    return html`<output>TranslatorOutput works</output>`;
   }
 }
