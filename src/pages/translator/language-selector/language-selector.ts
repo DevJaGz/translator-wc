@@ -34,7 +34,6 @@ export class LanguageSelector extends LitElement {
   render() {
     return html`
       <select
-        @change=${(event: Event) => this.handleSelection(event)}
         id="langauge"
         name="langauge"
         class="select select-primary w-full">
