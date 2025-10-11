@@ -11,8 +11,8 @@
 .translator-io {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.75rem;
-  margin-block: 1rem;
+  gap: 1.5rem;
+  margin-block: 1.5rem;
 
   .translator-io__input,
   .translator-io__output {
