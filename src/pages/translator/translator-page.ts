@@ -1,18 +1,19 @@
 import { LitElement, html } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { translatorService } from './translator.service';
-import '../../components/app-layout';
-import './translator-input/transator-input';
-import './translator-output/translator-output';
-import './language-selector/language-selector';
 import {
   LanguageSelectorEvent,
   SelectorType,
 } from './language-selector/language-selector';
+import '../../components/app-layout';
+import './translator-input/transator-input';
+import './translator-output/translator-output';
+import './language-selector/language-selector';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
   readonly #service = translatorService;
+
   protected createRenderRoot(): HTMLElement | DocumentFragment {
     // @ts-ignore
     return this;
