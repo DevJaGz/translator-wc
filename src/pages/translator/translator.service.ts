@@ -22,6 +22,10 @@ class TranslatorService {
     return this.#store.unsubscribe.bind(this.#store);
   }
 
+  translate(text: string) {
+    console.log('translate', text);
+  }
+
   setFromSelectorLanguage(language: LanguageCode) {
     this.#store.setFromSelectorLanguage(language);
   }
