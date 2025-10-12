@@ -14,7 +14,7 @@ export class LanguageDetectorService {
     const isVailable =
       (await window.LanguageDetector.availability()) === 'available';
 
-    this.session = isVailable
+    this.session = !isVailable
       ? await window.LanguageDetector.create({
           monitor: (event) => {
             this.monitorEvent = event;

@@ -11,12 +11,12 @@ import './translator-output/translator-output';
 import './language-selector/language-selector';
 import './translator-progress/translator-progress';
 import { PageController } from '@open-cells/page-controller';
-import { Unsubscriber } from './translator.store';
+import { Status, Unsubscriber } from './translator.store';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
   @state()
-  isReady = false;
+  isReady = true;
 
   readonly #service = translatorService;
   readonly #pageController = new PageController(this);
@@ -32,7 +32,7 @@ export class TranslatorPage extends LitElement {
 
     this.#service.initialize();
     this.subscription = this.#service.listenChanges((state) => {
-      this.isReady = state.status === 'ready';
+      this.isReady = (['ready'] as Status[]).includes(state.status);
     });
   }
 
@@ -59,12 +59,10 @@ export class TranslatorPage extends LitElement {
   }
 
   render() {
-    return !this.isReady
-      ? html` <app-layout>
-          <translator-progress></translator-progress
-        ></app-layout>`
-      : html`
-          <app-layout>
+    return html`<app-layout>
+      ${!this.isReady
+        ? html` <translator-progress></translator-progress> `
+        : html`
             <form
               @language-selected="${(
                 event: CustomEvent<LanguageSelectorEvent>,
@@ -93,7 +91,7 @@ export class TranslatorPage extends LitElement {
                   class="translator-io__output"></translator-output>
               </div>
             </form>
-          </app-layout>
-        `;
+          `}</app-layout
+    >`;
   }
 }
