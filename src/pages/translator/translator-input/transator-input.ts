@@ -17,7 +17,7 @@ export class TranslatorInput extends LitElement {
   constructor() {
     super();
     this.debounceTranslate = debounceText(
-      this.#service.translate.bind(this),
+      this.debounceTranslateCallback.bind(this),
       300,
     );
   }
@@ -34,6 +34,10 @@ export class TranslatorInput extends LitElement {
       'input',
       this.onHandleInput.bind(this),
     );
+  }
+
+  protected debounceTranslateCallback(text: string) {
+    this.#service.translate(text);
   }
 
   protected onHandleInput() {

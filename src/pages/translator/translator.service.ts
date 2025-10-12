@@ -24,6 +24,7 @@ class TranslatorService {
 
   translate(text: string) {
     console.log('translate', text);
+    this.setTranslation(text);
   }
 
   setFromSelectorLanguage(language: LanguageCode) {
