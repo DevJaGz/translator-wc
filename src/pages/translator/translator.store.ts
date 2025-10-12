@@ -8,6 +8,7 @@ export interface TranslatorState {
   toSelector: {
     languageCode: LanguageCode;
   };
+  translation: string;
 }
 
 export const INITIAL_STATE: TranslatorState = {
@@ -18,6 +19,7 @@ export const INITIAL_STATE: TranslatorState = {
     languageCode: LanguageCode['english-united-states'],
   },
   languages: TranslatorConfig.languages,
+  translation: '',
 };
 
 export type Observer = (state: TranslatorState) => void;
@@ -31,6 +33,8 @@ export interface Subscription {
   observer: Observer;
   options?: SubscriptionOptions;
 }
+
+export type Unsubscriber = () => void;
 
 export class TranslatorStoreReducer {
   #state = INITIAL_STATE;
@@ -54,7 +58,11 @@ export class TranslatorStoreReducer {
     });
   }
 
-  protected setState(state: Partial<TranslatorState>) {
+  setTranslation(translation: string) {
+    this.setState({ translation });
+  }
+
+  setState(state: Partial<TranslatorState>) {
     this.#state = { ...this.#state, ...state };
     this.notify();
   }
@@ -71,7 +79,7 @@ export class TranslatorStore extends TranslatorStoreReducer {
     if (options?.notifyImmediately) {
       observer(this.state);
     }
-    return subscription;
+    return () => this.unsubscribe(subscription);
   }
 
   unsubscribe(subscription: Subscription) {

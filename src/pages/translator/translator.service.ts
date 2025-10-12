@@ -29,6 +29,10 @@ class TranslatorService {
   setToSelectorLanguage(language: LanguageCode) {
     this.#store.setToSelectorLanguage(language);
   }
+
+  setTranslation(translation: string) {
+    this.#store.setTranslation(translation);
+  }
 }
 
 export const translatorService = new TranslatorService(new TranslatorStore());
