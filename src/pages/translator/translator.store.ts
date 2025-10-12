@@ -1,5 +1,12 @@
-import { Language, LanguageCode, TranslatorConfig } from './config';
+import { APIModel, Language, LanguageCode, TranslatorConfig } from './config';
 
+export type Status =
+  | 'downloading'
+  | 'idle'
+  | 'error'
+  | 'initializing'
+  | 'ready'
+  | 'translating';
 export interface TranslatorState {
   languages: Language[];
   fromSelector: {
@@ -9,6 +16,8 @@ export interface TranslatorState {
     languageCode: LanguageCode;
   };
   translation: string;
+  status: Status;
+  progress: Record<APIModel, number>;
 }
 
 export const INITIAL_STATE: TranslatorState = {
@@ -20,6 +29,11 @@ export const INITIAL_STATE: TranslatorState = {
   },
   languages: TranslatorConfig.languages,
   translation: '',
+  status: 'idle',
+  progress: {
+    LanguageDetector: 0,
+    Translator: 0,
+  },
 };
 
 export type Observer = (state: TranslatorState) => void;
@@ -60,6 +74,15 @@ export class TranslatorStoreReducer {
 
   setTranslation(translation: string) {
     this.setState({ translation });
+  }
+
+
+  setProgressByModel(model: APIModel, progress: number) {
+    this.setState({ progress: { ...this.state.progress, [model]: progress } });
+  }
+
+  setStatus(status: Status) {
+    this.setState({ status });
   }
 
   clean() {

@@ -62,3 +62,6 @@ export class TranslatorConfig {
     },
   ];
 }
+
+
+export type APIModel = 'Translator' | 'LanguageDetector';

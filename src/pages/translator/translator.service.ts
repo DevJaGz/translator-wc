@@ -1,12 +1,17 @@
-import { LanguageCode } from './config';
+import { APIModel, LanguageCode } from './config';
 import { LanguageDetectorService } from './language-detector.service';
 import { TranslatorApi } from './translator.api';
 import { TranslatorStore } from './translator.store';
 
+export interface ReportProgress {
+  event: ProgressEvent;
+  who: APIModel;
+}
+
 class TranslatorService {
   #store: TranslatorStore;
-  #translatorApi: TranslatorApi;
-  #languageDetectorApi: LanguageDetectorService;
+  #translatorApi: TranslatorApi; // TODO: rename to translatorService
+  #languageDetectorService: LanguageDetectorService;
 
   #languageDetector!: LanguageDetector;
 
@@ -17,7 +22,7 @@ class TranslatorService {
   ) {
     this.#store = store;
     this.#translatorApi = translatorApi;
-    this.#languageDetectorApi = languageDetectorApi;
+    this.#languageDetectorService = languageDetectorApi;
   }
 
   get dto() {
@@ -35,7 +40,9 @@ class TranslatorService {
   }
 
   async initialize() {
-    this.initializeLanguageDetector();
+    this.#store.setStatus('initializing');
+    await this.initializeLanguageDetector();
+    this.#store.setStatus('ready');
   }
 
   async clean() {
@@ -51,7 +58,7 @@ class TranslatorService {
   hasBrowserSupport() {
     return (
       this.#translatorApi.isSupported() &&
-      this.#languageDetectorApi.isSupported()
+      this.#languageDetectorService.isSupported()
     );
   }
 
@@ -68,7 +75,19 @@ class TranslatorService {
   }
 
   protected async initializeLanguageDetector() {
-    await this.#languageDetectorApi.initialize();
+    await this.#languageDetectorService.initialize({
+      notifyProgress: (event) => {
+        this.#store.setStatus('downloading');
+        this.reportProgress({
+          who: 'LanguageDetector',
+          event,
+        });
+      },
+    });
+  }
+
+  protected reportProgress(report: ReportProgress) {
+    this.#store.setProgressByModel(report.who, report.event.loaded);
   }
 }
 
