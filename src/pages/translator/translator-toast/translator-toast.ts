@@ -28,14 +28,7 @@ export interface ToastData {
 @customElement('translator-toast')
 export class TranslatorToast extends LitElement {
   @state()
-  data: ToastData | null = {
-    content: {
-      type: 'text',
-      text: 'Model Translator is downloading (50%)...',
-    },
-    severity: 'info',
-    icon: 'Info',
-  };
+  data: ToastData | null = null;
 
   readonly #service = translatorService;
 
@@ -51,6 +44,20 @@ export class TranslatorToast extends LitElement {
           }
         : null;
     });
+
+    setTimeout(() => {
+      this.data = {
+        content: {
+          type: 'text',
+          text: 'Model Translator is downloading (50%)...',
+        },
+        severity: 'info',
+        icon: 'Info',
+      };
+      setTimeout(() => {
+        this.data = null;
+      }, 1000);
+    }, 1000);
   }
 
   protected getSeverity({ error }: TranslatorState): ToastSeverity {
@@ -102,7 +109,8 @@ export class TranslatorToast extends LitElement {
         <p .innerHTML="${this.data?.content?.text ?? ''}"></p>
         <progress
           class="progress text-secondary"
-          .value="${(this.data?.content as ToastContentProgress)?.progress ?? ''}"
+          .value="${(this.data?.content as ToastContentProgress)?.progress ??
+          ''}"
           max="1"></progress>
       </div>
     </div>`;

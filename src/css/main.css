@@ -1,5 +1,5 @@
 @import url('./icons.css');
-@import url('./translator-page.css');
+@import url('./translator-page/translator-page.css');
 @import url('./credits-page.css');
 @import url('./not-found-page.css');
 @import url('./not-supported-page.css');
@@ -64,7 +64,7 @@
   box-sizing: border-box;
 }
 
-html,
+
 body {
   height: 100%;
   margin: 0;
@@ -73,6 +73,7 @@ body {
     calc(0.5rem + env(safe-area-inset-right));
   padding-block: calc(1rem + env(safe-area-inset-top))
     calc(1rem + env(safe-area-inset-bottom));
+
 }
 
 .google-logo {

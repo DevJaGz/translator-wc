@@ -52,7 +52,7 @@ export class TranslatorPage extends LitElement {
 
   render() {
     return html`
-      <app-layout>
+      <app-layout class="relative h-full overflow-hidden">
         <translator-toast></translator-toast>
         <form
           @language-selected="${(event: CustomEvent<LanguageSelectorEvent>) =>
@@ -78,8 +78,9 @@ export class TranslatorPage extends LitElement {
             <translator-input class="translator-io__input"></translator-input>
             <translator-output
               class="translator-io__output"></translator-output>
-          </div></form
-      ></app-layout>
+          </div>
+        </form>
+      </app-layout>
     `;
   }
 }

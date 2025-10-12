@@ -1,0 +1,51 @@
+@import url('./translator-toast.css');
+
+.language-selection {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+
+  .language-selection__selector {
+    width: 100%;
+  }
+}
+
+.translator-io {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-block: 1.5rem;
+
+  .translator-io__input,
+  .translator-io__output {
+    outline: 1px solid var(--border-secondary);
+    min-height: 200px;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+.translator-output {
+  &:empty:before {
+    content: attr(data-placeholder);
+    color: var(--text-tertiary);
+  }
+}
+
+@media (width >= 768px) {
+  .translator-io {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (width >= 576px) {
+  .language-selection {
+    grid-template-columns: 1fr auto 1fr;
+    .language-selection__selector {
+      width: 200px;
+    }
+    .language-selection__selector:first-child {
+      margin-inline-start: auto;
+    }
+  }
+}
