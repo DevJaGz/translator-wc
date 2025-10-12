@@ -1,26 +1,30 @@
 import { LitElement, PropertyValues, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { translatorService } from '../translator.service';
-import { Unsubscriber } from '../translator.store';
+import { UnsubscribeFn } from '../translator.store';
 
 @customElement('translator-output')
 export class TranslatorOutput extends LitElement {
   @state()
   translation = '';
 
+  @state()
+  isLoading = false;
+
   readonly #service = translatorService;
-  translationSubscription: Unsubscriber | null = null;
+  unsubscribeFn!: UnsubscribeFn;
 
   firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
-    this.translationSubscription = this.#service.listenChanges((state) => {
+    this.unsubscribeFn = this.#service.listenChanges((state) => {
       this.translation = state.translation;
+      this.isLoading = state.loading !== null;
     });
   }
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
-    this.translationSubscription!();
+    this.unsubscribeFn();
   }
 
   protected createRenderRoot(): HTMLElement | DocumentFragment {
@@ -34,7 +38,7 @@ export class TranslatorOutput extends LitElement {
         id="translator-output"
         class="flex-1 text-2xl translator-output"
         data-placeholder="Translation"
-        >${this.translation}</output
+        >${this.isLoading ? 'Loading...' : this.translation}</output
       >
 
       <div class="flex justify-between items-center flex-wrap gap-2">

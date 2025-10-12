@@ -1,7 +1,8 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, property, state } from 'lit/decorators.js';
 import { Language, LanguageCode } from '../config';
 import { translatorService } from '../translator.service';
+import { UnsubscribeFn } from '../translator.store';
 
 export const SelectorType = {
   FROM: 'fromSelector',
@@ -22,9 +23,20 @@ export class LanguageSelector extends LitElement {
   @property({ type: String })
   selectorType: SelectorType = SelectorType.FROM;
 
+  @state()
+  isLoading = false;
+
   list: Language[] = [];
+  unsubscribeFn!: UnsubscribeFn;
 
   readonly #service = translatorService;
+
+  constructor() {
+    super();
+    this.unsubscribeFn = this.#service.listenChanges((state) => {
+      this.isLoading = state.loading !== null;
+    });
+  }
 
   connectedCallback(): void {
     super.connectedCallback();
@@ -32,6 +44,11 @@ export class LanguageSelector extends LitElement {
       this.selectorType === 'toSelector'
         ? this.#service.state.languages.filter((lang) => lang.code !== 'auto')
         : this.#service.state.languages;
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.unsubscribeFn();
   }
 
   protected handleSelection(event: Event) {
@@ -64,7 +81,9 @@ export class LanguageSelector extends LitElement {
         @change="${this.handleSelection}"
         class="select  w-full"
         .id="${this.selectorType}"
-        .name="${this.selectorType}">
+        .name="${this.selectorType}"
+        .disabled="${this.isLoading}"
+        >
         ${this.list.map(
           (language) =>
             html`<option

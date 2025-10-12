@@ -50,7 +50,7 @@ export interface Subscription {
   options?: SubscriptionOptions;
 }
 
-export type Unsubscriber = () => void;
+export type UnsubscribeFn = () => void;
 
 export class TranslatorStoreReducer {
   #state = INITIAL_STATE;

@@ -47,6 +47,15 @@ class TranslatorService {
   }
 
   async translate(text: string) {
+
+    if (!text){
+      this.#store.setState({
+        translation: '',
+        loading: null,
+      });
+      return;
+    }
+
     this.#store.setStatus('translating');
     this.#store.setLoading({
       type: 'translation',
