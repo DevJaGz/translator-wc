@@ -11,8 +11,8 @@ export class TranslatorProgress extends LitElement {
   readonly #service = translatorService;
   subscription: Unsubscriber | null = null;
 
-  firstUpdated(_changedProperties: PropertyValues): void {
-    super.firstUpdated(_changedProperties);
+  constructor() {
+    super();
     this.subscription = this.#service.listenChanges((state) => {
       if (state.status === 'downloading') {
         const totalProgress = Object.keys(state.progress).length;
