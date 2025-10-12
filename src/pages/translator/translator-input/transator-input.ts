@@ -32,7 +32,7 @@ export class TranslatorInput extends LitElement {
   }
 
   render() {
-    return html` <fieldset class="flex flex-col h-full w-full">
+    return html` <fieldset class="flex flex-col h-full">
       <textarea
         id="input-textarea"
         name="input-textarea"
