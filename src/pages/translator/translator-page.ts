@@ -10,7 +10,6 @@ import '../../components/app-layout';
 import './translator-input/transator-input';
 import './translator-output/translator-output';
 import './language-selector/language-selector';
-import './translator-toast/translator-toast';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
@@ -53,7 +52,6 @@ export class TranslatorPage extends LitElement {
   render() {
     return html`
       <app-layout class="relative h-full overflow-hidden">
-        <translator-toast></translator-toast>
         <form
           @language-selected="${(event: CustomEvent<LanguageSelectorEvent>) =>
             this.onLanguageSelected(event)}">

@@ -8,18 +8,18 @@ export type Status =
   | 'ready'
   | 'translating';
 
-export interface DownloadingModel {
-  type: 'model';
+export interface ProgressLoading {
+  type: 'progress';
   name: APIModel;
   progress: number;
   details?: string;
 }
 
-export interface Translating {
-  type: 'translation';
+export interface StaticLoading {
+  type: 'static';
 }
 
-export type TranslatorLoading = null | DownloadingModel | Translating;
+export type TranslatorLoading = null | ProgressLoading | StaticLoading;
 
 export type TranslatorError = null | { message: string } ;
 export interface TranslatorState {
@@ -29,7 +29,6 @@ export interface TranslatorState {
   translation: string;
   status: Status;
   loading: TranslatorLoading;
-  error: TranslatorError;
 }
 
 export const INITIAL_STATE: TranslatorState = {
@@ -39,7 +38,6 @@ export const INITIAL_STATE: TranslatorState = {
   translation: '',
   status: 'idle',
   loading: null,
-  error: null,
 };
 
 export type Observer = (state: TranslatorState) => void;
@@ -80,10 +78,6 @@ export class TranslatorStoreReducer {
 
   setLoading(loading: TranslatorLoading) {
     this.setState({ loading });
-  }
-
-  setError(error: TranslatorError) {
-    this.setState({ error });
   }
 
   setStatus(status: Status) {
