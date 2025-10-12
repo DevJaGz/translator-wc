@@ -9,6 +9,7 @@ import '../../components/app-layout';
 import './translator-input/transator-input';
 import './translator-output/translator-output';
 import './language-selector/language-selector';
+import './translator-progress/translator-progress';
 import { PageController } from '@open-cells/page-controller';
 
 @customElement('translator-page')
@@ -51,6 +52,9 @@ export class TranslatorPage extends LitElement {
   render() {
     return html`
       <app-layout>
+        <div class="flex justify-center items-center">
+          <translator-progress></translator-progress>
+        </div>
         <form
           @language-selected="${(event: CustomEvent<LanguageSelectorEvent>) =>
             this.onLanguageSelected(event)}">
@@ -58,8 +62,9 @@ export class TranslatorPage extends LitElement {
             <language-selector
               class="language-selection__selector"
               .selectorType="${SelectorType.FROM}"
-              .languageCode="${this.#service.dto.fromSelector
-                .languageCode}"></language-selector>
+              .languageCode="${
+                this.#service.dto.fromSelector.languageCode
+              }"></language-selector>
             <button
               type="button"
               class="btn btn-ghost btn-circle">
@@ -68,8 +73,9 @@ export class TranslatorPage extends LitElement {
             <language-selector
               class="language-selection__selector"
               .selectorType="${SelectorType.TO}"
-              .languageCode="${this.#service.dto.toSelector
-                .languageCode}"></language-selector>
+              .languageCode="${
+                this.#service.dto.toSelector.languageCode
+              }"></language-selector>
           </div>
           <div class="translator-io">
             <translator-input class="translator-io__input"></translator-input>
