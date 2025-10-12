@@ -23,7 +23,7 @@ export class AppHeader extends LitElement {
           <span>l</span>
           <span>e</span>
         </div>
-        <span class="header__logo__traductor">Traductor</span>
+        <span class="header__logo__traductor">Translate</span>
       </h1>
     </header>`;
   }
