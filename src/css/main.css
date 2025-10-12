@@ -28,10 +28,12 @@
   --bg-primary: white;
   --bg-secondary: #f8f9fa;
   --bg-hover: #f1f3f4;
+  --bg-error: #ebe3e2;
 
   /* Border Colors */
   --border-primary: #e8eaed;
   --border-secondary: #dadce0;
+  --border-error: #fbb2b2;
 
   /* State Colors */
   --color-focus: #1a73e8;

@@ -19,14 +19,17 @@ export interface Translating {
   type: 'translation';
 }
 
-export type Loading = null | DownloadingModel | Translating;
+export type TranslatorLoading = null | DownloadingModel | Translating;
+
+export type TranslatorError = null | { message: string } ;
 export interface TranslatorState {
   languages: Language[];
   sourceLanguageCode: LanguageCode;
   targetLanguageCode: LanguageCode;
   translation: string;
   status: Status;
-  loading: Loading;
+  loading: TranslatorLoading;
+  error: TranslatorError;
 }
 
 export const INITIAL_STATE: TranslatorState = {
@@ -36,6 +39,7 @@ export const INITIAL_STATE: TranslatorState = {
   translation: '',
   status: 'idle',
   loading: null,
+  error: null,
 };
 
 export type Observer = (state: TranslatorState) => void;
@@ -62,7 +66,7 @@ export class TranslatorStoreReducer {
     this.setState({
       sourceLanguageCode: code,
     });
-  } 
+  }
 
   setTargetLanguageCode(code: LanguageCode) {
     this.setState({
@@ -74,8 +78,12 @@ export class TranslatorStoreReducer {
     this.setState({ translation });
   }
 
-  setLoading(loading: Loading) {
+  setLoading(loading: TranslatorLoading) {
     this.setState({ loading });
+  }
+
+  setError(error: TranslatorError) {
+    this.setState({ error });
   }
 
   setStatus(status: Status) {

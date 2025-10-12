@@ -23,10 +23,65 @@
   }
 }
 
-.translator-output{
+.translator-output {
   &:empty:before {
     content: attr(data-placeholder);
     color: var(--text-tertiary);
+  }
+}
+
+.translator-toast {
+  display: flex;
+  position: fixed;
+  right: calc(1rem + env(safe-area-inset-right));
+  margin-inline-start: calc(1rem + env(safe-area-inset-left));
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border-secondary);
+  background-color: var(--bg-primary);
+  padding: 0.875rem 1rem;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+
+  .translator-toast__icon {
+    display: grid;
+    place-items: center;
+  }
+
+  .translator-toast__content{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .progress {
+      display: none;
+      color: var(--google-blue);
+    }
+  }
+
+  &[data-severity='error'] {
+    color: var(--color-error);
+    background-color: var(--bg-error);
+    border-color: var(--border-error);
+
+    .translator-toast__icon {
+      color: var(--color-error);
+    }
+
+    .translator-toast__content {
+      .progress {
+        display: none;
+      }
+    }
+  }
+
+  &[data-content-type='progress'] {
+    .translator-toast__content {
+      .progress {
+        display: block;
+      }
+    }
   }
 }
 

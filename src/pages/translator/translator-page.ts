@@ -53,7 +53,7 @@ export class TranslatorPage extends LitElement {
   render() {
     return html`
       <app-layout>
-        <translator-toast class="absolute right-0 bottom-0"></translator-toast>
+        <translator-toast></translator-toast>
         <form
           @language-selected="${(event: CustomEvent<LanguageSelectorEvent>) =>
             this.onLanguageSelected(event)}">
