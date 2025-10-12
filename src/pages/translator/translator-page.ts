@@ -21,7 +21,10 @@ export class TranslatorPage extends LitElement {
     const hasBrowserSupport = translatorService.hasBrowserSupport();
     if (!hasBrowserSupport) {
       this.#pageController.navigate('/not-supported');
+      return;
     }
+
+    this.#service.initialize();
   }
 
   onLanguageSelected(event: CustomEvent<LanguageSelectorEvent>) {
@@ -33,6 +36,11 @@ export class TranslatorPage extends LitElement {
     }
 
     this.#service.setToSelectorLanguage(selectedLanguage);
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.#service.clean();
   }
 
   protected createRenderRoot(): HTMLElement | DocumentFragment {

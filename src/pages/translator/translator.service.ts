@@ -1,14 +1,23 @@
 import { LanguageCode } from './config';
-import { TranslatorApiService } from './translator-api.service';
+import { LanguageDetectorService } from './language-detector.service';
+import { TranslatorApi } from './translator.api';
 import { TranslatorStore } from './translator.store';
 
 class TranslatorService {
   #store: TranslatorStore;
-  #translatorApi: TranslatorApiService;
+  #translatorApi: TranslatorApi;
+  #languageDetectorApi: LanguageDetectorService;
 
-  constructor(store: TranslatorStore, translatorApi: TranslatorApiService) {
+  #languageDetector!: LanguageDetector;
+
+  constructor(
+    store: TranslatorStore,
+    translatorApi: TranslatorApi,
+    languageDetectorApi: LanguageDetectorService,
+  ) {
     this.#store = store;
     this.#translatorApi = translatorApi;
+    this.#languageDetectorApi = languageDetectorApi;
   }
 
   get dto() {
@@ -25,13 +34,25 @@ class TranslatorService {
     return this.#store.unsubscribe.bind(this.#store);
   }
 
+  async initialize() {
+    this.initializeLanguageDetector();
+  }
+
+  async clean() {
+    this.#languageDetector.destroy();
+    this.#store.clean();
+  }
+
   translate(text: string) {
     console.log('translate', text);
     this.setTranslation(text);
   }
 
   hasBrowserSupport() {
-    return this.#translatorApi.isSupported() && 'LanguageDetector' in self;
+    return (
+      this.#translatorApi.isSupported() &&
+      this.#languageDetectorApi.isSupported()
+    );
   }
 
   setFromSelectorLanguage(language: LanguageCode) {
@@ -45,9 +66,14 @@ class TranslatorService {
   setTranslation(translation: string) {
     this.#store.setTranslation(translation);
   }
+
+  protected async initializeLanguageDetector() {
+    await this.#languageDetectorApi.initialize();
+  }
 }
 
 export const translatorService = new TranslatorService(
   new TranslatorStore(),
-  new TranslatorApiService(),
+  new TranslatorApi(),
+  new LanguageDetectorService(),
 );

@@ -62,6 +62,10 @@ export class TranslatorStoreReducer {
     this.setState({ translation });
   }
 
+  clean() {
+    this.setState(INITIAL_STATE);
+  }
+
   setState(state: Partial<TranslatorState>) {
     this.#state = { ...this.#state, ...state };
     this.notify();
