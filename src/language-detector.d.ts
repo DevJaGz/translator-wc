@@ -2,7 +2,7 @@ declare class LanguageDetector {
   readonly inputQuota: number;
   static availability(options?: {
     expectedInputLanguages?: string[];
-  }): Promise<'available' | 'downloadable' | 'unavailable'>;
+  }): Promise<'available' | 'downloadable' | 'downloading' | 'unavailable'>;
 
   static create(options?: {
     expectedInputLanguages?: string[];
@@ -17,5 +17,10 @@ declare class LanguageDetector {
     options?: {
       signal?: AbortSignal;
     },
-  ): Promise<string>;
+  ): Promise<
+    {
+      detectedLanguage: string;
+      confidence: number;
+    }[]
+  >;
 }

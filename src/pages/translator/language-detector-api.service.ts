@@ -1,11 +1,7 @@
-export interface InitializeOptions {
-  notifyProgress?: (progress: ProgressEvent) => void;
-}
-export class LanguageDetectorService {
-  protected session?: LanguageDetector;
-  protected monitorEvent?: EventTarget;
-  protected progressListener?: EventListener;
+import { ApiService, InitializeOptions } from './api.service';
+import { LanguageCode } from './config';
 
+export class LanguageDetectorApiService extends ApiService<LanguageDetector> {
   isSupported(): boolean {
     return 'LanguageDetector' in window;
   }
@@ -25,20 +21,15 @@ export class LanguageDetectorService {
             event.addEventListener('downloadprogress', this.progressListener);
           },
         })
-      : await window.LanguageDetector.create();
+      : (this.session ?? (await window.LanguageDetector.create()));
   }
 
-  destroy() {
-    this.session?.destroy();
-    this.session = undefined;
-    this.distroyMonitorEvent();
-  }
-
-  protected distroyMonitorEvent() {
-    this.monitorEvent?.removeEventListener(
-      'downloadprogress',
-      this.progressListener!,
-    );
-    this.monitorEvent = undefined;
+  async detect(text: string): Promise<LanguageCode> {
+    const session = this.session;
+    if (!session) {
+      throw new Error('LanguageDetector is not initialized');
+    }
+    const codes = await session.detect(text);
+    return codes[0].detectedLanguage as LanguageCode;
   }
 }

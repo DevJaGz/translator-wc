@@ -1,6 +1,6 @@
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { LanguageCode } from '../config';
+import { Language, LanguageCode } from '../config';
 import { translatorService } from '../translator.service';
 
 export const SelectorType = {
@@ -22,7 +22,17 @@ export class LanguageSelector extends LitElement {
   @property({ type: String })
   selectorType: SelectorType = SelectorType.FROM;
 
+  list: Language[] = [];
+
   readonly #service = translatorService;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.list =
+      this.selectorType === 'toSelector'
+        ? this.#service.dto.languages.filter((lang) => lang.code !== 'auto')
+        : this.#service.dto.languages;
+  }
 
   protected handleSelection(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
@@ -55,7 +65,7 @@ export class LanguageSelector extends LitElement {
         class="select  w-full"
         .id="${this.selectorType}"
         .name="${this.selectorType}">
-        ${this.#service.dto.languages.map(
+        ${this.list.map(
           (language) =>
             html`<option
               .selected="${this.languageCode === language.code}"

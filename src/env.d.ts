@@ -12,6 +12,7 @@ declare module '*.css?inline' {
 // Extend Window and WorkerGlobalScope
 interface Window {
   LanguageDetector: typeof LanguageDetector;
+  Translator: typeof Translator;
 }
 
 interface WorkerGlobalScope {

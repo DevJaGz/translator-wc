@@ -22,10 +22,10 @@ export interface TranslatorState {
 
 export const INITIAL_STATE: TranslatorState = {
   fromSelector: {
-    languageCode: LanguageCode['auto-detect'],
+    languageCode: LanguageCode['auto'],
   },
   toSelector: {
-    languageCode: LanguageCode['english-united-states'],
+    languageCode: LanguageCode['english'],
   },
   languages: TranslatorConfig.languages,
   translation: '',
