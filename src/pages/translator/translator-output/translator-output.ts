@@ -11,12 +11,7 @@ export class TranslatorOutput extends LitElement {
   readonly #service = translatorService;
   translationSubscription: Unsubscriber | null = null;
 
-  protected createRenderRoot(): HTMLElement | DocumentFragment {
-    // @ts-ignore
-    return this;
-  }
-
-  protected firstUpdated(_changedProperties: PropertyValues): void {
+  firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
     this.translationSubscription = this.#service.listenChanges((state) => {
       this.translation = state.translation;
@@ -26,6 +21,11 @@ export class TranslatorOutput extends LitElement {
   disconnectedCallback(): void {
     super.disconnectedCallback();
     this.translationSubscription!();
+  }
+
+  protected createRenderRoot(): HTMLElement | DocumentFragment {
+    // @ts-ignore
+    return this;
   }
 
   render() {

@@ -24,11 +24,6 @@ export class LanguageSelector extends LitElement {
 
   readonly #service = translatorService;
 
-  protected createRenderRoot(): HTMLElement | DocumentFragment {
-    // @ts-ignore
-    return this;
-  }
-
   protected handleSelection(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     const selectedLanguage = selectElement.value as LanguageCode;
@@ -46,6 +41,11 @@ export class LanguageSelector extends LitElement {
     );
 
     this.dispatchEvent(languageSelectedEvent);
+  }
+
+  protected createRenderRoot(): HTMLElement | DocumentFragment {
+    // @ts-ignore
+    return this;
   }
 
   render() {

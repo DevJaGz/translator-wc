@@ -14,11 +14,6 @@ import './language-selector/language-selector';
 export class TranslatorPage extends LitElement {
   readonly #service = translatorService;
 
-  protected createRenderRoot(): HTMLElement | DocumentFragment {
-    // @ts-ignore
-    return this;
-  }
-
   onLanguageSelected(event: CustomEvent<LanguageSelectorEvent>) {
     const { selectorType, selectedLanguage } = event.detail;
 
@@ -28,6 +23,11 @@ export class TranslatorPage extends LitElement {
     }
 
     this.#service.setToSelectorLanguage(selectedLanguage);
+  }
+
+  protected createRenderRoot(): HTMLElement | DocumentFragment {
+    // @ts-ignore
+    return this;
   }
 
   render() {
