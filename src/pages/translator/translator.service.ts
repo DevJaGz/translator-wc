@@ -55,7 +55,12 @@ class TranslatorService {
     const targetLanguage = toSelector.languageCode;
     if (sourceLanguage === LanguageCode.auto) {
       await this.initializeLanguageDetector();
-      sourceLanguage = await this.#languageDetectorService.detect(text);
+      const [first, second] = await this.#languageDetectorService.detect(text);
+      const detectedCode =
+        first.detectedLanguage === toSelector.languageCode
+          ? second.detectedLanguage
+          : first.detectedLanguage;
+      sourceLanguage = detectedCode as LanguageCode;
     }
     await this.initializeTranslator(sourceLanguage, targetLanguage);
     const translation = await this.#translatorService.translate(text);

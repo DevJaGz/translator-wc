@@ -1,5 +1,4 @@
 import { ApiService, InitializeOptions } from './api.service';
-import { LanguageCode } from './config';
 
 export class LanguageDetectorApiService extends ApiService<LanguageDetector> {
   isSupported(): boolean {
@@ -24,12 +23,11 @@ export class LanguageDetectorApiService extends ApiService<LanguageDetector> {
       : (this.session ?? (await window.LanguageDetector.create()));
   }
 
-  async detect(text: string): Promise<LanguageCode> {
+  async detect(text: string){
     const session = this.session;
     if (!session) {
       throw new Error('LanguageDetector is not initialized');
     }
-    const codes = await session.detect(text);
-    return codes[0].detectedLanguage as LanguageCode;
+    return await session.detect(text);
   }
 }
