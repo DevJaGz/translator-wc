@@ -9,14 +9,6 @@ export const routes: RouteDefinition[] = [
       await import('../pages/translator/translator-page.js');
     },
   },
-    {
-    path: '/creditos',
-    name: 'credits',
-    component: 'credits-page',
-    action: async () => {
-      await import('../pages/credits/credits-page.js');
-    },
-  },
   {
     path: '/no-soportado',
     name: 'not-supported',
