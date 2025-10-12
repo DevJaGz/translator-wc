@@ -16,7 +16,7 @@
 
   .translator-io__input,
   .translator-io__output {
-    outline: 1px solid gray;
+    outline: 1px solid var(--border-secondary);
     min-height: 200px;
     border-radius: 0.5rem;
     padding: 0.5rem 0.75rem;

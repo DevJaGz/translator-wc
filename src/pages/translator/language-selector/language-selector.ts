@@ -52,7 +52,7 @@ export class LanguageSelector extends LitElement {
     return html`
       <select
         @change="${this.handleSelection}"
-        class="select select-primary w-full"
+        class="select  w-full"
         .id="${this.selectorType}"
         .name="${this.selectorType}">
         ${this.#service.dto.languages.map(

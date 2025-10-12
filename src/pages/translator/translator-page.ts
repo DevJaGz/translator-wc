@@ -44,8 +44,8 @@ export class TranslatorPage extends LitElement {
                 .languageCode}"></language-selector>
             <button
               type="button"
-              class="btn">
-              ⇄
+              class="btn btn-ghost btn-circle">
+              <span class="material-symbols-outlined"> swap_horiz </span>
             </button>
             <language-selector
               class="language-selection__selector"

@@ -10,7 +10,7 @@ export class TranslatorOutput extends LitElement {
 
   render() {
     return html`<div class="flex flex-col h-full">
-      <output class="flex-1">TranslatorOutput works</output>
+      <output class="flex-1 text-lg">TranslatorOutput works</output>
 
       <div class="flex justify-between items-center flex-wrap gap-2">
         <div class="flex gap-2">

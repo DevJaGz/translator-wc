@@ -5,8 +5,9 @@
 @import url('./not-supported-page.css');
 @import 'tailwindcss';
 @plugin "daisyui" {
-  themes: business;
+  themes: corporate;
 }
+
 
 :root {
   --google-font-family: 'Google Sans', system-ui, -apple-system,
@@ -17,6 +18,38 @@
   --google-red: #ea4335;
   --google-yellow: #fbbc05;
   --google-green: #34a853;
+  --text-secondary: #5f6368;
+  /* Text Colors */
+  --text-primary: #3c4043;
+  --text-secondary: #5f6368;
+  --text-tertiary: #9aa0a6;
+
+  /* Background Colors */
+  --bg-primary: white;
+  --bg-secondary: #f8f9fa;
+  --bg-hover: #f1f3f4;
+
+  /* Border Colors */
+  --border-primary: #e8eaed;
+  --border-secondary: #dadce0;
+
+  /* State Colors */
+  --color-focus: #1a73e8;
+  --color-success: var(--google-green);
+  --color-warning: var(--google-yellow);
+  --color-error: var(--google-red);
+
+  /* Warning Colors */
+  --warning-bg: #fff3cd;
+  --warning-text: #856404;
+  --warning-border: #ffeaa7;
+}
+
+@plugin "daisyui/theme" {
+  name: "corporate";
+  --color-primary: var(--text-primary);
+  --color-primary-content: var(--text-secondary);
+  --color-secondary: var(--text-secondary);
 }
 
 *,
@@ -37,7 +70,9 @@ body {
 }
 
 .google-logo {
-  font-family: var(--google-font-family);
+  display: flex;
+  align-items: center;
+  font-size: 1.7rem;
 
   span:is(:nth-child(1), :nth-child(4)) {
     color: var(--google-blue);
@@ -54,4 +89,8 @@ body {
   span:nth-child(5) {
     color: var(--google-green);
   }
+}
+
+.material-symbols-outlined {
+  color: var(--text-secondary);
 }

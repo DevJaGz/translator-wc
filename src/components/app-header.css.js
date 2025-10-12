@@ -3,12 +3,19 @@ import { css } from 'lit';
 export const styles = css`
   .header__logo {
     display: flex;
-    gap: 0.5rem;
+    align-items: center;
+    gap: 0.25rem;
     margin-inline: auto;
     width: fit-content;
     line-height: 1.5;
-    font-size: 1.7rem;
+    font-size: 1.325rem;
     user-select: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+
+    .header__logo__traductor {
+      font-weight: 400;
+    }
   }
 
   .tab {
