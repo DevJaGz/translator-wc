@@ -30,7 +30,11 @@ export class TranslatorApiService extends ApiService<Translator> {
             event.addEventListener('downloadprogress', this.progressListener);
           },
         })
-      : (this.session ?? (await window.Translator.create()));
+      : (this.session ??
+        (await window.Translator.create({
+          sourceLanguage: params.sourceLanguage,
+          targetLanguage: params.targetLanguage,
+        })));
   }
 
   async translate(text: string) {

@@ -25,15 +25,6 @@ export class TranslatorInput extends LitElement {
   firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
     this.inputTextarea.focus();
-    this.inputTextarea.addEventListener('input', this.onHandleInput.bind(this));
-  }
-
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.inputTextarea.removeEventListener(
-      'input',
-      this.onHandleInput.bind(this),
-    );
   }
 
   protected debounceTranslateCallback(text: string) {
@@ -62,7 +53,9 @@ export class TranslatorInput extends LitElement {
         id="input-textarea"
         name="input-textarea"
         class="flex-1 focus-visible:outline-0 resize-none overflow-hidden text-2xl"
-        maxlength="5000"></textarea>
+        maxlength="5000"
+        @input="${this.onHandleInput}"
+        ></textarea>
       <div class="flex justify-between items-center flex-wrap gap-2">
         <div class="flex gap-2">
           <button

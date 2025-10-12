@@ -4,7 +4,7 @@ declare class Translator {
     targetLanguage: string;
   }): Promise<'available' | 'downloadable' | 'downloading' |'unavailable'>;
 
-  static create(config?: {
+  static create(config: {
     sourceLanguage: string;
     targetLanguage: string;
     monitor?: (monitor: EventTarget) => void;
