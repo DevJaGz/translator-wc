@@ -23,11 +23,8 @@ class TranslatorService {
     this.#languageDetectorService = languageDetectorApi;
   }
 
-  get dto() {
-    // TODO: rename to state
-    return {
-      ...this.#store.state,
-    };
+  get state() {
+    return this.#store.state;
   }
 
   get listenChanges() {
@@ -45,26 +42,20 @@ class TranslatorService {
 
   async clean() {
     this.#languageDetectorService.destroy();
-    this.#languageDetectorService.destroy();
+    this.#translatorService.destroy();
     this.#store.clean();
   }
 
   async translate(text: string) {
-    const { fromSelector, toSelector } = this.#store.state;
-    let sourceLanguage = fromSelector.languageCode;
-    const targetLanguage = toSelector.languageCode;
-    if (sourceLanguage === LanguageCode.auto) {
-      await this.initializeLanguageDetector();
-      const [first, second] = await this.#languageDetectorService.detect(text);
-      const detectedCode =
-        first.detectedLanguage === toSelector.languageCode
-          ? second.detectedLanguage
-          : first.detectedLanguage;
-      sourceLanguage = detectedCode as LanguageCode;
-    }
-    await this.initializeTranslator(sourceLanguage, targetLanguage);
+    this.#store.setStatus('translating');
+    const { sourceLanguageCode, targetLanguageCode } =
+      await this.getLanguageCodes(text);
+    await this.initializeTranslator(sourceLanguageCode, targetLanguageCode);
     const translation = await this.#translatorService.translate(text);
-    this.#store.setTranslation(translation);
+    this.#store.setState({
+      status: 'ready',
+      translation,
+    });
   }
 
   hasBrowserSupport() {
@@ -75,19 +66,42 @@ class TranslatorService {
   }
 
   setFromSelectorLanguage(language: LanguageCode) {
-    this.#store.setFromSelectorLanguage(language);
+    this.#store.setSourceLanguageCode(language);
   }
 
   setToSelectorLanguage(language: LanguageCode) {
-    this.#store.setToSelectorLanguage(language);
+    this.#store.setTargetLanguageCode(language);
+  }
+
+  protected async getLanguageCodes(text: string) {
+    const state = this.#store.state;
+    let sourceLanguageCode = state.sourceLanguageCode;
+    const targetLanguageCode = state.targetLanguageCode;
+
+    if (sourceLanguageCode === LanguageCode.auto) {
+      await this.initializeLanguageDetector();
+      const [first, second] = await this.#languageDetectorService.detect(text);
+      const detectedCode =
+        first.detectedLanguage === targetLanguageCode
+          ? second.detectedLanguage
+          : first.detectedLanguage;
+      sourceLanguageCode = detectedCode as LanguageCode;
+    }
+
+    return {
+      sourceLanguageCode,
+      targetLanguageCode,
+    };
   }
 
   protected async initializeLanguageDetector() {
     await this.#languageDetectorService.initialize({
       notifyProgress: (event) => {
         this.#store.setState({
-          progress: {
-            LanguageDetector: event.loaded,
+          loading: {
+            type: 'model',
+            name: 'LanguageDetector',
+            progress: event.loaded,
           },
           status: 'downloading',
         });
@@ -104,8 +118,10 @@ class TranslatorService {
       targetLanguage,
       notifyProgress: (event) => {
         this.#store.setState({
-          progress: {
-            Translator: event.loaded,
+          loading: {
+            type: 'model',
+            name: 'Translator',
+            progress: event.loaded,
           },
           status: 'downloading',
         });

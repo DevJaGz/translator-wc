@@ -30,8 +30,8 @@ export class LanguageSelector extends LitElement {
     super.connectedCallback();
     this.list =
       this.selectorType === 'toSelector'
-        ? this.#service.dto.languages.filter((lang) => lang.code !== 'auto')
-        : this.#service.dto.languages;
+        ? this.#service.state.languages.filter((lang) => lang.code !== 'auto')
+        : this.#service.state.languages;
   }
 
   protected handleSelection(event: Event) {

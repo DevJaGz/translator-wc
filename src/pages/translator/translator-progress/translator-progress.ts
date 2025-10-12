@@ -1,34 +1,10 @@
-import { LitElement, PropertyValues, html } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
-import { translatorService } from '../translator.service';
-import { Unsubscriber } from '../translator.store';
+import { LitElement, html } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
 
 @customElement('translator-progress')
 export class TranslatorProgress extends LitElement {
-  @state()
+  @property({ type: Number })
   progress = 0;
-
-  readonly #service = translatorService;
-  subscription: Unsubscriber | null = null;
-
-  constructor() {
-    super();
-    this.subscription = this.#service.listenChanges((state) => {
-      if (state.status === 'downloading') {
-        const totalProgress = Object.keys(state.progress).length;
-        const languageDetectorProgress = state.progress.LanguageDetector ?? 0;
-        const translatorProgress = state.progress.Translator ?? 0;
-        const progress = languageDetectorProgress + translatorProgress;
-        const computedProgress = progress / totalProgress;
-        this.progress = computedProgress;
-      }
-    });
-  }
-
-  disconnectedCallback(): void {
-    super.disconnectedCallback();
-    this.subscription!();
-  }
 
   protected createRenderRoot(): HTMLElement | DocumentFragment {
     // @ts-ignore

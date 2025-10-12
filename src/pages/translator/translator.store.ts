@@ -7,33 +7,35 @@ export type Status =
   | 'initializing'
   | 'ready'
   | 'translating';
+
+export interface DownloadingModel {
+  type: 'model';
+  name: APIModel;
+  progress: number;
+  details?: string;
+}
+
+export interface Translating {
+  type: 'translation';
+}
+
+export type Loading = null | DownloadingModel | Translating;
 export interface TranslatorState {
   languages: Language[];
-  fromSelector: {
-    languageCode: LanguageCode;
-  };
-  toSelector: {
-    languageCode: LanguageCode;
-  };
+  sourceLanguageCode: LanguageCode;
+  targetLanguageCode: LanguageCode;
   translation: string;
   status: Status;
-  progress: Partial<Record<APIModel, number>>;
+  loading: Loading;
 }
 
 export const INITIAL_STATE: TranslatorState = {
-  fromSelector: {
-    languageCode: LanguageCode['auto'],
-  },
-  toSelector: {
-    languageCode: LanguageCode['english'],
-  },
+  sourceLanguageCode: LanguageCode.auto,
+  targetLanguageCode: LanguageCode.english,
   languages: TranslatorConfig.languages,
   translation: '',
   status: 'idle',
-  progress: {
-    LanguageDetector: 0,
-    Translator: 0,
-  },
+  loading: null,
 };
 
 export type Observer = (state: TranslatorState) => void;
@@ -56,19 +58,15 @@ export class TranslatorStoreReducer {
     return this.#state as DeepReadonly<TranslatorState>;
   }
 
-  setFromSelectorLanguage(language: LanguageCode) {
+  setSourceLanguageCode(code: LanguageCode) {
     this.setState({
-      fromSelector: {
-        languageCode: language,
-      },
+      sourceLanguageCode: code,
     });
-  }
+  } 
 
-  setToSelectorLanguage(language: LanguageCode) {
+  setTargetLanguageCode(code: LanguageCode) {
     this.setState({
-      toSelector: {
-        languageCode: language,
-      },
+      targetLanguageCode: code,
     });
   }
 
@@ -76,8 +74,8 @@ export class TranslatorStoreReducer {
     this.setState({ translation });
   }
 
-  setProgressByModel(model: APIModel, progress: number) {
-    this.setState({ progress: { ...this.state.progress, [model]: progress } });
+  setLoading(loading: Loading) {
+    this.setState({ loading });
   }
 
   setStatus(status: Status) {
@@ -92,9 +90,6 @@ export class TranslatorStoreReducer {
     this.#state = {
       ...this.#state,
       ...state,
-      fromSelector: { ...this.#state.fromSelector, ...state.fromSelector },
-      toSelector: { ...this.#state.toSelector, ...state.toSelector },
-      progress: { ...this.#state.progress, ...state.progress },
     };
     this.notify();
   }

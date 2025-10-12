@@ -5,13 +5,11 @@ import {
   LanguageSelectorEvent,
   SelectorType,
 } from './language-selector/language-selector';
+import { PageController } from '@open-cells/page-controller';
 import '../../components/app-layout';
 import './translator-input/transator-input';
 import './translator-output/translator-output';
 import './language-selector/language-selector';
-import './translator-progress/translator-progress';
-import { PageController } from '@open-cells/page-controller';
-import { Status, Unsubscriber } from './translator.store';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
@@ -20,7 +18,6 @@ export class TranslatorPage extends LitElement {
 
   readonly #service = translatorService;
   readonly #pageController = new PageController(this);
-  subscription: Unsubscriber | null = null;
 
   constructor() {
     super();
@@ -29,11 +26,6 @@ export class TranslatorPage extends LitElement {
       this.#pageController.navigate('/not-supported');
       return;
     }
-
-    this.#service.initialize();
-    this.subscription = this.#service.listenChanges((state) => {
-      this.isReady = (['ready'] as Status[]).includes(state.status);
-    });
   }
 
   onLanguageSelected(event: CustomEvent<LanguageSelectorEvent>) {
@@ -50,7 +42,6 @@ export class TranslatorPage extends LitElement {
   disconnectedCallback(): void {
     super.disconnectedCallback();
     this.#service.clean();
-    this.subscription!();
   }
 
   protected createRenderRoot(): HTMLElement | DocumentFragment {
@@ -59,39 +50,34 @@ export class TranslatorPage extends LitElement {
   }
 
   render() {
-    return html`<app-layout>
-      ${!this.isReady
-        ? html` <translator-progress></translator-progress> `
-        : html`
-            <form
-              @language-selected="${(
-                event: CustomEvent<LanguageSelectorEvent>,
-              ) => this.onLanguageSelected(event)}">
-              <div class="language-selection">
-                <language-selector
-                  class="language-selection__selector"
-                  .selectorType="${SelectorType.FROM}"
-                  .languageCode="${this.#service.dto.fromSelector
-                    .languageCode}"></language-selector>
-                <button
-                  type="button"
-                  class="btn btn-ghost btn-circle">
-                  <span class="material-symbols-outlined"> swap_horiz </span>
-                </button>
-                <language-selector
-                  class="language-selection__selector"
-                  .selectorType="${SelectorType.TO}"
-                  .languageCode="${this.#service.dto.toSelector
-                    .languageCode}"></language-selector>
-              </div>
-              <div class="translator-io">
-                <translator-input
-                  class="translator-io__input"></translator-input>
-                <translator-output
-                  class="translator-io__output"></translator-output>
-              </div>
-            </form>
-          `}</app-layout
-    >`;
+    return html`
+      <app-layout>
+        <form
+          @language-selected="${(event: CustomEvent<LanguageSelectorEvent>) =>
+            this.onLanguageSelected(event)}">
+          <div class="language-selection">
+            <language-selector
+              class="language-selection__selector"
+              .selectorType="${SelectorType.FROM}"
+              .languageCode="${this.#service.state
+                .sourceLanguageCode}"></language-selector>
+            <button
+              type="button"
+              class="btn btn-ghost btn-circle">
+              <span class="material-symbols-outlined"> swap_horiz </span>
+            </button>
+            <language-selector
+              class="language-selection__selector"
+              .selectorType="${SelectorType.TO}"
+              .languageCode="${this.#service.state
+                .targetLanguageCode}"></language-selector>
+          </div>
+          <div class="translator-io">
+            <translator-input class="translator-io__input"></translator-input>
+            <translator-output
+              class="translator-io__output"></translator-output>
+          </div></form
+      ></app-layout>
+    `;
   }
 }
