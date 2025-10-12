@@ -2,6 +2,7 @@ import { LitElement, PropertyValues, html } from 'lit';
 import { customElement, query, state } from 'lit/decorators.js';
 import { translatorService } from '../translator.service';
 import { debounceText } from '../../../utils/debounce-text';
+import { UnsubscribeFn } from '../translator.store';
 
 @customElement('translator-input')
 export class TranslatorInput extends LitElement {
@@ -9,10 +10,14 @@ export class TranslatorInput extends LitElement {
   inputTextarea!: HTMLTextAreaElement;
 
   @state()
-  _textCount = 0;
+  textCount = 0;
+
+  @state()
+  isLoading = false;
 
   readonly #service = translatorService;
   readonly debounceTranslate: (text: string) => void;
+  unsubscribeFn!: UnsubscribeFn;
 
   constructor() {
     super();
@@ -20,11 +25,19 @@ export class TranslatorInput extends LitElement {
       this.debounceTranslateCallback.bind(this),
       300,
     );
+    this.unsubscribeFn = this.#service.listenChanges((state) => {
+      this.isLoading = state.loading?.type === 'translation';
+    });
   }
 
   firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
     this.inputTextarea.focus();
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.unsubscribeFn();
   }
 
   protected debounceTranslateCallback(text: string) {
@@ -39,7 +52,7 @@ export class TranslatorInput extends LitElement {
   protected resizeTextarea() {
     this.inputTextarea.style.height = 'auto';
     this.inputTextarea.style.height = `${this.inputTextarea.scrollHeight}px`;
-    this._textCount = this.inputTextarea.value.length;
+    this.textCount = this.inputTextarea.value.length;
   }
 
   protected createRenderRoot(): HTMLElement | DocumentFragment {
@@ -54,8 +67,7 @@ export class TranslatorInput extends LitElement {
         name="input-textarea"
         class="flex-1 focus-visible:outline-0 resize-none overflow-hidden text-2xl"
         maxlength="5000"
-        @input="${this.onHandleInput}"
-        ></textarea>
+        @input="${this.onHandleInput}"></textarea>
       <div class="flex justify-between items-center flex-wrap gap-2">
         <div class="flex gap-2">
           <button
@@ -69,7 +81,7 @@ export class TranslatorInput extends LitElement {
             <span class="material-symbols-outlined"> volume_up </span>
           </button>
         </div>
-        <span class="text-secondary  text-xs"> ${this._textCount} / 5000</span>
+        <span class="text-secondary  text-xs"> ${this.textCount} / 5000</span>
       </div>
     </fieldset>`;
   }
