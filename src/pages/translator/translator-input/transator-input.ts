@@ -46,6 +46,11 @@ export class TranslatorInput extends LitElement {
             class="btn btn-ghost btn-circle">
             <span class="material-symbols-outlined"> mic </span>
           </button>
+          <button
+            type="button"
+            class="btn btn-ghost btn-circle">
+            <span class="material-symbols-outlined"> volume_up </span>
+          </button>
         </div>
         <span class="opacity-50"> ${this._textCount} / 5000</span>
       </div>
