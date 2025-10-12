@@ -77,17 +77,14 @@ class TranslatorService {
   protected async initializeLanguageDetector() {
     await this.#languageDetectorService.initialize({
       notifyProgress: (event) => {
-        this.#store.setStatus('downloading');
-        this.reportProgress({
-          who: 'LanguageDetector',
-          event,
+        this.#store.setState({
+          progress: {
+            LanguageDetector: event.loaded,
+          },
+          status: 'downloading',
         });
       },
     });
-  }
-
-  protected reportProgress(report: ReportProgress) {
-    this.#store.setProgressByModel(report.who, report.event.loaded);
   }
 }
 

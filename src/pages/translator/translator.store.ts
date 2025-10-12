@@ -17,7 +17,7 @@ export interface TranslatorState {
   };
   translation: string;
   status: Status;
-  progress: Record<APIModel, number>;
+  progress: Partial<Record<APIModel, number>>;
 }
 
 export const INITIAL_STATE: TranslatorState = {
@@ -76,7 +76,6 @@ export class TranslatorStoreReducer {
     this.setState({ translation });
   }
 
-
   setProgressByModel(model: APIModel, progress: number) {
     this.setState({ progress: { ...this.state.progress, [model]: progress } });
   }
@@ -90,7 +89,13 @@ export class TranslatorStoreReducer {
   }
 
   setState(state: Partial<TranslatorState>) {
-    this.#state = { ...this.#state, ...state };
+    this.#state = {
+      ...this.#state,
+      ...state,
+      fromSelector: { ...this.#state.fromSelector, ...state.fromSelector },
+      toSelector: { ...this.#state.toSelector, ...state.toSelector },
+      progress: { ...this.#state.progress, ...state.progress },
+    };
     this.notify();
   }
 
