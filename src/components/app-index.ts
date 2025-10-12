@@ -10,6 +10,8 @@ import './app-header';
 startApp({
   routes,
   mainNode: 'app-content',
+  persistentPages: [],
+  viewLimit: 1,
 });
 
 @customElement('app-index')
