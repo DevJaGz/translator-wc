@@ -1,11 +1,14 @@
 import { LanguageCode } from './config';
+import { TranslatorApiService } from './translator-api.service';
 import { TranslatorStore } from './translator.store';
 
 class TranslatorService {
   #store: TranslatorStore;
+  #translatorApi: TranslatorApiService;
 
-  constructor(store: TranslatorStore) {
+  constructor(store: TranslatorStore, translatorApi: TranslatorApiService) {
     this.#store = store;
+    this.#translatorApi = translatorApi;
   }
 
   get dto() {
@@ -27,8 +30,8 @@ class TranslatorService {
     this.setTranslation(text);
   }
 
-  hasBrowserSupport(){
-    return 'Translator' in window && 'LanguageDetector' in window;
+  hasBrowserSupport() {
+    return this.#translatorApi.isSupported() && 'LanguageDetector' in self;
   }
 
   setFromSelectorLanguage(language: LanguageCode) {
@@ -44,4 +47,7 @@ class TranslatorService {
   }
 }
 
-export const translatorService = new TranslatorService(new TranslatorStore());
+export const translatorService = new TranslatorService(
+  new TranslatorStore(),
+  new TranslatorApiService(),
+);
