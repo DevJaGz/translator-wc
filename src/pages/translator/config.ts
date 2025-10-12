@@ -24,35 +24,35 @@ export class TranslatorConfig {
       code: LanguageCode['auto'],
     },
     {
-      name: 'Spanish (Spain)',
+      name: 'Spanish',
       code: LanguageCode['spanish'],
     },
     {
-      name: 'English (United States)',
+      name: 'English',
       code: LanguageCode['english'],
     },
     {
-      name: 'French (France)',
+      name: 'French',
       code: LanguageCode['french'],
     },
     {
-      name: 'German (Germany)',
+      name: 'German',
       code: LanguageCode['german'],
     },
     {
-      name: 'Italian (Italy)',
+      name: 'Italian',
       code: LanguageCode['italian'],
     },
     {
-      name: 'Portuguese (Brazil)',
+      name: 'Portuguese',
       code: LanguageCode['portuguese'],
     },
     {
-      name: 'Russian (Russia)',
+      name: 'Russian',
       code: LanguageCode['russian'],
     },
     {
-      name: 'Chinese (China)',
+      name: 'Chinese',
       code: LanguageCode['chinese'],
     },
   ];
