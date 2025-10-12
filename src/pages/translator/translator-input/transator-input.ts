@@ -39,8 +39,14 @@ export class TranslatorInput extends LitElement {
         class="flex-1 focus-visible:outline-0 resize-none overflow-hidden"
         placeholder="Write what you want to translate here"
         maxlength="5000"></textarea>
-      <div class="flex justify-between">
-        <div class="">Controls</div>
+      <div class="flex justify-between items-center flex-wrap gap-2">
+        <div class="flex gap-2">
+          <button
+            type="button"
+            class="btn btn-ghost btn-circle">
+            <span class="material-symbols-outlined"> mic </span>
+          </button>
+        </div>
         <span class="opacity-50"> ${this._textCount} / 5000</span>
       </div>
     </fieldset>`;
