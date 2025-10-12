@@ -10,6 +10,7 @@ import '../../components/app-layout';
 import './translator-input/transator-input';
 import './translator-output/translator-output';
 import './language-selector/language-selector';
+import './translator-toast/translator-toast';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
@@ -32,11 +33,11 @@ export class TranslatorPage extends LitElement {
     const { selectorType, selectedLanguage } = event.detail;
 
     if (selectorType === SelectorType.FROM) {
-      this.#service.setFromSelectorLanguage(selectedLanguage);
+      this.#service.setSourceLanguageCode(selectedLanguage);
       return;
     }
 
-    this.#service.setToSelectorLanguage(selectedLanguage);
+    this.#service.setTargetLanguageCode(selectedLanguage);
   }
 
   disconnectedCallback(): void {
@@ -52,6 +53,7 @@ export class TranslatorPage extends LitElement {
   render() {
     return html`
       <app-layout>
+        <translator-toast class="absolute right-0 bottom-0"></translator-toast>
         <form
           @language-selected="${(event: CustomEvent<LanguageSelectorEvent>) =>
             this.onLanguageSelected(event)}">

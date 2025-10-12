@@ -48,6 +48,9 @@ class TranslatorService {
 
   async translate(text: string) {
     this.#store.setStatus('translating');
+    this.#store.setLoading({
+      type: 'translation',
+    });
     const { sourceLanguageCode, targetLanguageCode } =
       await this.getLanguageCodes(text);
     await this.initializeTranslator(sourceLanguageCode, targetLanguageCode);
@@ -55,6 +58,7 @@ class TranslatorService {
     this.#store.setState({
       status: 'ready',
       translation,
+      loading: null,
     });
   }
 
@@ -65,11 +69,11 @@ class TranslatorService {
     );
   }
 
-  setFromSelectorLanguage(language: LanguageCode) {
+  setSourceLanguageCode(language: LanguageCode) {
     this.#store.setSourceLanguageCode(language);
   }
 
-  setToSelectorLanguage(language: LanguageCode) {
+  setTargetLanguageCode(language: LanguageCode) {
     this.#store.setTargetLanguageCode(language);
   }
 

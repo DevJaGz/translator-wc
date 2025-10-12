@@ -1,10 +1,25 @@
 import { LitElement, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { customElement, state } from 'lit/decorators.js';
+import { translatorService } from '../translator.service';
 
-@customElement('translator-progress')
-export class TranslatorProgress extends LitElement {
-  @property({ type: Number })
+@customElement('translator-toast')
+export class TranslatorToast extends LitElement {
+  @state()
+  isLoading = false;
+
+  @state()
   progress = 0;
+
+  readonly #service = translatorService;
+
+  constructor() {
+    super();
+    this.#service.listenChanges((state) => {
+      this.isLoading = state.loading !== null;
+      this.progress =
+        state.loading?.type === 'model' ? state.loading.progress : 0;
+    });
+  }
 
   protected createRenderRoot(): HTMLElement | DocumentFragment {
     // @ts-ignore
@@ -12,7 +27,7 @@ export class TranslatorProgress extends LitElement {
   }
 
   render() {
-    return html`<div class="flex flex-col items-center h-full  gap-2">
+    return html`<div >
       <p class="text-center text-sm text-secondary max-w-90">
         Fetching models... <br />
         It can take a while when you first visit this page to populate the
