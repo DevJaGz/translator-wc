@@ -13,9 +13,9 @@ export class AppHeader extends LitElement {
   render() {
     return html`<header>
       <h1
-        class="header__logo google-logo"
+        class="header__logo"
         aria-label="Google Traductor">
-        <div>
+        <div class="google-logo">
           <span>G</span>
           <span>o</span>
           <span>o</span>

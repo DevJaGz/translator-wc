@@ -37,25 +37,20 @@ body {
 
 .google-logo {
   font-family: var(--google-font-family);
-  line-height: 1.5;
-  font-size: 1.5rem;
-  user-select: none;
 
-  div {
-    span:is(:nth-child(1), :nth-child(4)) {
-      color: var(--google-blue);
-    }
+  span:is(:nth-child(1), :nth-child(4)) {
+    color: var(--google-blue);
+  }
 
-    span:is(:nth-child(2), :nth-child(6)) {
-      color: var(--google-red);
-    }
+  span:is(:nth-child(2), :nth-child(6)) {
+    color: var(--google-red);
+  }
 
-    span:nth-child(3) {
-      color: var(--google-yellow);
-    }
+  span:nth-child(3) {
+    color: var(--google-yellow);
+  }
 
-    span:nth-child(5) {
-      color: var(--google-green);
-    }
+  span:nth-child(5) {
+    color: var(--google-green);
   }
 }

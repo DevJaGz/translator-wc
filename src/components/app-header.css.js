@@ -6,7 +6,9 @@ export const styles = css`
     gap: 0.5rem;
     margin-inline: auto;
     width: fit-content;
-    padding: 0.75rem 1rem;
+    line-height: 1.5;
+    font-size: 1.7rem;
+    user-select: none;
   }
 
   .tab {
