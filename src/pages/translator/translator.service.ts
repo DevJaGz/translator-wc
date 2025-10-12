@@ -28,7 +28,7 @@ class TranslatorService {
   }
 
   hasBrowserSupport(){
-    return 'Translator' in window && 'LanguageDetection' in window;
+    return 'Translator' in window && 'LanguageDetector' in window;
   }
 
   setFromSelectorLanguage(language: LanguageCode) {

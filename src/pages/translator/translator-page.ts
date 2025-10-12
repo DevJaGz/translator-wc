@@ -20,7 +20,7 @@ export class TranslatorPage extends LitElement {
     super();
     const hasBrowserSupport = translatorService.hasBrowserSupport();
     if (!hasBrowserSupport) {
-      this.#pageController.navigate('not-supported');
+      this.#pageController.navigate('/not-supported');
     }
   }
 
