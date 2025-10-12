@@ -23,6 +23,13 @@
   }
 }
 
+.translator-output{
+  &:empty:before {
+    content: attr(data-placeholder);
+    color: var(--text-tertiary);
+  }
+}
+
 @media (width >= 768px) {
   .translator-io {
     grid-template-columns: 1fr 1fr;
