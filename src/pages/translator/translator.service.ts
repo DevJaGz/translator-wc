@@ -27,6 +27,10 @@ class TranslatorService {
     this.setTranslation(text);
   }
 
+  hasBrowserSupport(){
+    return 'Translator' in window && 'LanguageDetection' in window;
+  }
+
   setFromSelectorLanguage(language: LanguageCode) {
     this.#store.setFromSelectorLanguage(language);
   }

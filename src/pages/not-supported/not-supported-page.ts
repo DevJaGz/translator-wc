@@ -12,7 +12,36 @@ export class NotSupportedPage extends LitElement {
   render() {
     return html`
       <app-layout>
-        NotSupportedPage Works
+        <div class="flex flex-col  justify-center h-full mx-auto max-w-xl gap-4">
+          <div
+            role="alert"
+            class="alert alert-vertical  sm:alert-horizontal ">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              class="stroke-primary h-6 w-6 shrink-0">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span class="text-secondary"
+              >Sorry, your browser is not supported. <br />
+              This application requires a more recent version of your browser.
+            </span>
+          </div>
+          <div class="px-5">
+            Please try again using one of the following browsers (or newer
+            versions): <br />
+            <ul class="list-disc list-inside mt-2">
+              <li>Google Chrome 115+</li>
+              <li>Mozilla Firefox 117+</li>
+              <li>Safari 17+</li>
+            </ul>
+          </div>
+        </div>
       </app-layout>
     `;
   }

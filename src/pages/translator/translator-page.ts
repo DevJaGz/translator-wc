@@ -9,10 +9,20 @@ import '../../components/app-layout';
 import './translator-input/transator-input';
 import './translator-output/translator-output';
 import './language-selector/language-selector';
+import { PageController } from '@open-cells/page-controller';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
   readonly #service = translatorService;
+  readonly #pageController = new PageController(this);
+
+  constructor() {
+    super();
+    const hasBrowserSupport = translatorService.hasBrowserSupport();
+    if (!hasBrowserSupport) {
+      this.#pageController.navigate('not-supported');
+    }
+  }
 
   onLanguageSelected(event: CustomEvent<LanguageSelectorEvent>) {
     const { selectorType, selectedLanguage } = event.detail;

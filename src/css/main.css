@@ -50,6 +50,10 @@
   --color-primary: var(--text-primary);
   --color-primary-content: var(--text-secondary);
   --color-secondary: var(--text-secondary);
+  --alert-color: var(--bg-secondary);
+  --color-info: var(--google-blue);
+  --color-success: var(--google-green);
+  --color-warning: var(--google-yellow);
 }
 
 *,
