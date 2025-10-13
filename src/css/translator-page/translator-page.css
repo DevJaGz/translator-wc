@@ -17,6 +17,10 @@
   .language-selection__selector {
     width: 100%;
   }
+
+  .language-selection__swap-button{
+    margin-inline: auto;
+  }
 }
 
 .translator-io {
