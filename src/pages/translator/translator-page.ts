@@ -5,13 +5,14 @@ import {
   LanguageSelectorEvent,
   SelectorType,
 } from './language-selector/language-selector';
+import { UnsubscribeFn } from './translator.store';
+import { LanguageCode } from './config';
 import { PageController } from '@open-cells/page-controller';
 import '../../components/app-layout';
 import './translator-input/transator-input';
 import './translator-output/translator-output';
 import './language-selector/language-selector';
-import { UnsubscribeFn } from './translator.store';
-import { LanguageCode } from './config';
+import './model-notification/model-notification';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
@@ -67,6 +68,7 @@ export class TranslatorPage extends LitElement {
 
   render() {
     return html`
+      <model-notification></model-notification>
       <app-layout class="relative h-full overflow-hidden">
         <form
           @language-selected="${(event: CustomEvent<LanguageSelectorEvent>) =>
