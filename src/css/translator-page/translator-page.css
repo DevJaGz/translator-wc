@@ -4,6 +4,11 @@
   opacity: 0.35;
 }
 
+.btn.btn-circle {
+  display: grid ;
+  align-items: center;
+}
+
 .language-selection {
   display: grid;
   grid-template-columns: 1fr;

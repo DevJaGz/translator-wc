@@ -1,5 +1,6 @@
 import { APIModel, LanguageCode } from './config';
 import { LanguageDetectorApiService } from './language-detector-api.service';
+import { TextToSpeechService } from './text-to-speech.service';
 import { TranslatorApiService } from './translator-api.service';
 import {
   TranslatorErrorService,
@@ -7,6 +8,7 @@ import {
   TranslationError,
   TranslatorError,
   UnknownError,
+  TextToSpeechError,
 } from './translator-error.service';
 import { TranslatorStore } from './translator.store';
 
@@ -20,17 +22,20 @@ class TranslatorService {
   #translatorService: TranslatorApiService;
   #languageDetectorService: LanguageDetectorApiService;
   #errorService: TranslatorErrorService;
+  #textToSpeechService: TextToSpeechService;
 
   constructor(
     store: TranslatorStore,
     translatorApi: TranslatorApiService,
     languageDetectorApi: LanguageDetectorApiService,
     errorService: TranslatorErrorService,
+    textToSpeechService: TextToSpeechService,
   ) {
     this.#store = store;
     this.#translatorService = translatorApi;
     this.#languageDetectorService = languageDetectorApi;
     this.#errorService = errorService;
+    this.#textToSpeechService = textToSpeechService;
   }
 
   get state() {
@@ -132,6 +137,34 @@ class TranslatorService {
     navigator.clipboard.writeText(this.#store.state.translation);
   }
 
+  async listenTranslation() {
+    try {
+      this.#textToSpeechService.speak(this.#store.state.translation,
+        {
+          langugeCode: this.#store.state.targetLanguageCode,
+          onStart: () => {
+            this.#store.setIsSpeaking(true);
+          },
+          onEnd: () => {
+            this.#store.setIsSpeaking(false);
+          },
+          onError: () => {
+            this.#store.setIsSpeaking(false);
+          },
+        }
+      );
+    } catch (error) {
+      this.#errorService.notifyError(
+        error instanceof TextToSpeechError ? error : new UnknownError(),
+      );
+    }
+  }
+
+  async stopListeningTranslation() {
+    this.#textToSpeechService.stop();
+    this.#store.setIsSpeaking(false);
+  }
+
   protected async performTranslation(
     text: string,
     sourceLanguageCode: LanguageCode,
@@ -213,4 +246,5 @@ export const translatorService = new TranslatorService(
   new TranslatorApiService(),
   new LanguageDetectorApiService(),
   new TranslatorErrorService(),
+  new TextToSpeechService(),
 );

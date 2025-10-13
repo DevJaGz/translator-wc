@@ -30,6 +30,7 @@ export interface TranslatorState {
   status: Status;
   loading: TranslatorLoading;
   sourceText: string;
+  isSpeaking: boolean;
 }
 
 export const INITIAL_STATE: TranslatorState = {
@@ -40,6 +41,7 @@ export const INITIAL_STATE: TranslatorState = {
   sourceText: '',
   status: 'idle',
   loading: null,
+  isSpeaking: false,
 };
 
 export type Observer = (state: TranslatorState) => void;
@@ -80,6 +82,10 @@ export class TranslatorStoreReducer {
 
   setLoading(loading: TranslatorLoading) {
     this.setState({ loading });
+  }
+
+  setIsSpeaking(isSpeaking: boolean) {
+    this.setState({ isSpeaking });
   }
 
   setStatus(status: Status) {

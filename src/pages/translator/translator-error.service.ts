@@ -6,20 +6,34 @@ export class TranslatorError extends Error {
 }
 
 export class TranslationError extends TranslatorError {
-  constructor() {
-    super('No fue posible traducir el texto. Por favor, inténtelo de nuevo.');
+  constructor(message?: string) {
+    super(
+      message ??
+        'No fue posible traducir el texto. Por favor, inténtelo de nuevo.',
+    );
   }
 }
 
 export class LanguageDetectorError extends TranslatorError {
-  constructor() {
-    super('No fue posible detectar el idioma del texto. Por favor, inténtelo de nuevo.');
+  constructor(message?: string) {
+    super(
+      message ??
+        'No fue posible detectar el idioma del texto. Por favor, inténtelo de nuevo.',
+    );
   }
 }
 
+export class TextToSpeechError extends TranslatorError {
+  constructor(message?: string) {
+    super(
+      message ??
+        'No fue posible reproducir el texto. Por favor, inténtelo de nuevo.',
+    );
+  }
+}
 export class UnknownError extends TranslatorError {
-  constructor() {
-    super('Ha ocurrido un error inesperado. Inténtelo más tarde.');
+  constructor(message?: string) {
+    super(message ?? 'Ha ocurrido un error inesperado. Inténtelo más tarde.');
   }
 }
 
