@@ -104,13 +104,14 @@ export class LanguageSelector extends LitElement {
       <select
         @change="${this.handleSelection}"
         class="select  w-full"
+        style="pointer-events: ${this.isLoading ? 'none' : 'auto'};"
         .id="${this.selectorType}"
-        .name="${this.selectorType}"
-        .disabled="${this.isLoading}">
+        .name="${this.selectorType}">
         ${this.list.map(
           (language) =>
             html`<option
-              .selected="${this.currentSelections[this.selectorType] === language.code}"
+              .selected="${this.currentSelections[this.selectorType] ===
+              language.code}"
               value=${language.code}>
               ${language.name}
             </option>`,
