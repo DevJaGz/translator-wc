@@ -31,7 +31,7 @@ export class TranslatorPage extends LitElement {
   onLanguageSelected(event: CustomEvent<LanguageSelectorEvent>) {
     const { selectorType, selectedLanguage } = event.detail;
 
-    if (selectorType === SelectorType.FROM) {
+    if (selectorType === SelectorType.SOURCE) {
       this.#service.setSourceLanguageCode(selectedLanguage);
       return;
     }
@@ -58,9 +58,7 @@ export class TranslatorPage extends LitElement {
           <div class="language-selection">
             <language-selector
               class="language-selection__selector"
-              .selectorType="${SelectorType.FROM}"
-              .languageCode="${this.#service.state
-                .sourceLanguageCode}"></language-selector>
+              .selectorType="${SelectorType.SOURCE}"></language-selector>
             <button
               type="button"
               class="btn btn-ghost btn-circle">
@@ -68,9 +66,7 @@ export class TranslatorPage extends LitElement {
             </button>
             <language-selector
               class="language-selection__selector"
-              .selectorType="${SelectorType.TO}"
-              .languageCode="${this.#service.state
-                .targetLanguageCode}"></language-selector>
+              .selectorType="${SelectorType.TARGET}"></language-selector>
           </div>
           <div class="translator-io">
             <translator-input class="translator-io__input"></translator-input>

@@ -1,12 +1,12 @@
-import { LitElement, html } from 'lit';
+import { LitElement, PropertyValues, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { Language, LanguageCode } from '../config';
 import { translatorService } from '../translator.service';
-import { UnsubscribeFn } from '../translator.store';
+import { TranslatorState, UnsubscribeFn } from '../translator.store';
 
 export const SelectorType = {
-  FROM: 'fromSelector',
-  TO: 'toSelector',
+  SOURCE: 'source',
+  TARGET: 'target',
 } as const;
 export type SelectorType = (typeof SelectorType)[keyof typeof SelectorType];
 
@@ -18,37 +18,61 @@ export interface LanguageSelectorEvent {
 @customElement('language-selector')
 export class LanguageSelector extends LitElement {
   @property({ type: String })
-  languageCode = '';
-
-  @property({ type: String })
-  selectorType: SelectorType = SelectorType.FROM;
+  selectorType: SelectorType = SelectorType.SOURCE;
 
   @state()
   isLoading = false;
 
+  @state()
   list: Language[] = [];
   unsubscribeFn!: UnsubscribeFn;
 
-  readonly #service = translatorService;
+  currentSelections: Record<SelectorType, LanguageCode | null> = {
+    [SelectorType.SOURCE]: null,
+    [SelectorType.TARGET]: null,
+  };
 
-  constructor() {
-    super();
-    this.unsubscribeFn = this.#service.listenChanges((state) => {
-      this.isLoading = state.loading !== null;
-    });
-  }
+  readonly #service = translatorService;
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.list =
-      this.selectorType === 'toSelector'
-        ? this.#service.state.languages.filter((lang) => lang.code !== 'auto')
-        : this.#service.state.languages;
+    this.updateSelections(this.#service.state);
+    this.unsubscribeFn = this.#service.listenChanges((state) => {
+      this.isLoading = state.loading !== null;
+      this.updateSelections(state);
+    });
   }
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
     this.unsubscribeFn();
+  }
+
+  protected updateSelections(state: TranslatorState) {
+    if (
+      this.currentSelections[SelectorType.TARGET] ===
+        state.targetLanguageCode &&
+      this.currentSelections[SelectorType.SOURCE] === state.sourceLanguageCode
+    ) {
+      return;
+    }
+
+    this.list =
+      this.selectorType === SelectorType.SOURCE
+        ? state.languages.filter(
+            (lang) => lang.code !== state.targetLanguageCode,
+          )
+        : state.languages.filter(
+            (lang) =>
+              ![LanguageCode.auto, state.sourceLanguageCode].includes(
+                lang.code,
+              ),
+          );
+
+    this.currentSelections = {
+      [SelectorType.SOURCE]: state.sourceLanguageCode,
+      [SelectorType.TARGET]: state.targetLanguageCode,
+    };
   }
 
   protected handleSelection(event: Event) {
@@ -82,12 +106,11 @@ export class LanguageSelector extends LitElement {
         class="select  w-full"
         .id="${this.selectorType}"
         .name="${this.selectorType}"
-        .disabled="${this.isLoading}"
-        >
+        .disabled="${this.isLoading}">
         ${this.list.map(
           (language) =>
             html`<option
-              .selected="${this.languageCode === language.code}"
+              .selected="${this.currentSelections[this.selectorType] === language.code}"
               value=${language.code}>
               ${language.name}
             </option>`,
