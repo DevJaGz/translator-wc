@@ -12,7 +12,8 @@ export class NotSupportedPage extends LitElement {
   render() {
     return html`
       <app-layout>
-        <div class="flex flex-col  justify-center h-full mx-auto max-w-xl gap-4">
+        <div
+          class="flex flex-col  justify-center h-full mx-auto max-w-xl gap-4">
           <div
             role="alert"
             class="alert alert-vertical  sm:alert-horizontal ">
@@ -31,15 +32,6 @@ export class NotSupportedPage extends LitElement {
               >Sorry, your browser is not supported. <br />
               This application requires a more recent version of your browser.
             </span>
-          </div>
-          <div class="px-5">
-            Please try again using one of the following browsers (or newer
-            versions): <br />
-            <ul class="list-disc list-inside mt-2">
-              <li>Google Chrome 115+</li>
-              <li>Mozilla Firefox 117+</li>
-              <li>Safari 17+</li>
-            </ul>
           </div>
         </div>
       </app-layout>
