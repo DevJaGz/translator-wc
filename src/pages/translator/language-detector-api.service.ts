@@ -14,7 +14,7 @@ export class LanguageDetectorApiService extends ApiService<LanguageDetector> {
     }
 
     if (availability === 'available') {
-      this.session = this.session ?? (await window.LanguageDetector.create());
+      this.session = await window.LanguageDetector.create();
       return;
     }
 
@@ -35,7 +35,7 @@ export class LanguageDetectorApiService extends ApiService<LanguageDetector> {
             event.addEventListener('downloadprogress', this.progressListener);
           },
         });
-      });
+      })
     }
   }
 

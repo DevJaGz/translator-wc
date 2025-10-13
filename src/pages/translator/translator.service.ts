@@ -172,6 +172,7 @@ class TranslatorService {
       await this.initializeTranslator(sourceLanguageCode, targetLanguageCode);
       return await this.#translatorService.translate(text);
     } catch (error) {
+      console.log(error);
       throw new TranslationError();
     }
   }

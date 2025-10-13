@@ -22,12 +22,10 @@ export class TranslatorApiService extends ApiService<Translator> {
     }
 
     if (availability === 'available') {
-      this.session =
-        this.session ??
-        (await window.Translator.create({
-          sourceLanguage: params.sourceLanguage,
-          targetLanguage: params.targetLanguage,
-        }));
+      this.session = await window.Translator.create({
+        sourceLanguage: params.sourceLanguage,
+        targetLanguage: params.targetLanguage,
+      });
       return;
     }
 
