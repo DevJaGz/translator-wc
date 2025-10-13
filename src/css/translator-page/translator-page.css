@@ -1,5 +1,9 @@
 @import url('./translator-toast.css');
 
+.btn:disabled {
+  opacity: 0.35;
+}
+
 .language-selection {
   display: grid;
   grid-template-columns: 1fr;

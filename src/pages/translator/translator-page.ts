@@ -81,7 +81,7 @@ export class TranslatorPage extends LitElement {
               type="button"
               .disabled="${!this.canSwapLanguages}"
               @click="${() => this.#service.swapLanguages()}"
-              class="btn btn-ghost btn-circle disabled:opacity-30">
+              class="btn btn-ghost btn-circle">
               <span class="material-symbols-outlined"> swap_horiz </span>
             </button>
             <language-selector

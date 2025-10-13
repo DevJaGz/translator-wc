@@ -128,6 +128,10 @@ class TranslatorService {
     this.translate(this.#store.state.sourceText);
   }
 
+  copyTranslation() {
+    navigator.clipboard.writeText(this.#store.state.translation);
+  }
+
   protected async performTranslation(
     text: string,
     sourceLanguageCode: LanguageCode,
