@@ -30,7 +30,7 @@ export class TranslatorInput extends LitElement {
     super();
     this.debounceTranslate = debounceText(
       this.debounceTranslateCallback.bind(this),
-      300,
+      1000,
     );
     this.unsubscribeFn = this.#service.listenChanges((state) => {
       this.isLoading = state.loading?.type === 'static';
