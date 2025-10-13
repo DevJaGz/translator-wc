@@ -15,6 +15,9 @@ export class TranslatorInput extends LitElement {
   @state()
   isLoading = false;
 
+  @state()
+  currentText = '';
+
   readonly #service = translatorService;
   readonly debounceTranslate: (text: string) => void;
   unsubscribeFn!: UnsubscribeFn;
@@ -26,7 +29,10 @@ export class TranslatorInput extends LitElement {
       300,
     );
     this.unsubscribeFn = this.#service.listenChanges((state) => {
-      this.isLoading = state.loading?.type === 'translation';
+      this.isLoading = state.loading?.type === 'static';
+      if (this.currentText !== state.sourceText) {
+        this.currentText = state.sourceText;
+      }
     });
   }
 
@@ -41,6 +47,7 @@ export class TranslatorInput extends LitElement {
   }
 
   protected debounceTranslateCallback(text: string) {
+    this.currentText = text;
     this.#service.translate(text);
   }
 
@@ -67,6 +74,7 @@ export class TranslatorInput extends LitElement {
         name="input-textarea"
         class="flex-1 focus-visible:outline-0 resize-none overflow-hidden text-2xl"
         maxlength="5000"
+        .value="${this.currentText}"
         @input="${this.onHandleInput}"></textarea>
       <div class="flex justify-between items-center flex-wrap gap-2">
         <div class="flex gap-2">

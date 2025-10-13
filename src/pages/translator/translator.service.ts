@@ -100,10 +100,15 @@ class TranslatorService {
   }
 
   swapLanguages() {
-    const { sourceLanguageCode, targetLanguageCode } = this.#store.state;
-    this.#store.setSourceLanguageCode(targetLanguageCode);
-    this.#store.setTargetLanguageCode(sourceLanguageCode);
-    this.translate(this.#store.state.sourceText);
+    const { sourceLanguageCode, targetLanguageCode, sourceText, translation } =
+      this.#store.state;
+
+    this.#store.setState({
+      sourceLanguageCode: targetLanguageCode,
+      targetLanguageCode: sourceLanguageCode,
+      translation: sourceText,
+      sourceText: translation,
+    });
   }
 
   hasBrowserSupport() {
