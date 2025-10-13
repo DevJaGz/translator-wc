@@ -20,8 +20,12 @@ export class TranslatorOutput extends LitElement {
 
   onTextToSpeechPlay(event: CustomEvent<boolean>) {
     const canPlay = event.detail;
+    this.isSpeaking = canPlay;
     if (canPlay) {
-      this.#service.listenTranslation();
+      this.#service.listenTranslation(
+        this.translation,
+        this.#service.state.targetLanguageCode,
+      );
       return;
     }
     this.#service.stopListeningTranslation();
@@ -33,7 +37,9 @@ export class TranslatorOutput extends LitElement {
       (state) => {
         this.translation = state.translation;
         this.isLoading = state.loading !== null;
-        this.isSpeaking = state.isSpeaking;
+        if (!state.isSpeaking) {
+          this.isSpeaking = false;
+        }
       },
       { notifyImmediately: true },
     );

@@ -137,11 +137,11 @@ class TranslatorService {
     navigator.clipboard.writeText(this.#store.state.translation);
   }
 
-  async listenTranslation() {
+  async listenTranslation(text: string, langugeCode?: LanguageCode) {
     try {
-      this.#textToSpeechService.speak(this.#store.state.translation,
+      this.#textToSpeechService.speak(text,
         {
-          langugeCode: this.#store.state.targetLanguageCode,
+          langugeCode,
           onStart: () => {
             this.#store.setIsSpeaking(true);
           },

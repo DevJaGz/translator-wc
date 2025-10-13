@@ -3,6 +3,7 @@ import { customElement, query, state } from 'lit/decorators.js';
 import { translatorService } from '../translator.service';
 import { debounceText } from '../../../utils/debounce-text';
 import { UnsubscribeFn } from '../translator.store';
+import '../text-to-speech-button/text-to-speech-button';
 
 @customElement('translator-input')
 export class TranslatorInput extends LitElement {
@@ -18,6 +19,9 @@ export class TranslatorInput extends LitElement {
   @state()
   currentText = '';
 
+  @state()
+  isSpeaking = false;
+
   readonly #service = translatorService;
   readonly debounceTranslate: (text: string) => void;
   unsubscribeFn!: UnsubscribeFn;
@@ -30,10 +34,26 @@ export class TranslatorInput extends LitElement {
     );
     this.unsubscribeFn = this.#service.listenChanges((state) => {
       this.isLoading = state.loading?.type === 'static';
+      if (!state.isSpeaking) {
+        this.isSpeaking = false;
+      }
       if (this.currentText !== state.sourceText) {
         this.currentText = state.sourceText;
       }
     });
+  }
+
+  onTextToSpeechPlay(event: CustomEvent<boolean>) {
+    const canPlay = event.detail;
+    this.isSpeaking = canPlay;
+    if (canPlay) {
+      this.#service.listenTranslation(
+        this.currentText,
+        this.#service.state.sourceLanguageCode,
+      );
+      return;
+    }
+    this.#service.stopListeningTranslation();
   }
 
   firstUpdated(_changedProperties: PropertyValues): void {
@@ -78,16 +98,18 @@ export class TranslatorInput extends LitElement {
         @input="${this.onHandleInput}"></textarea>
       <div class="flex justify-between items-center flex-wrap gap-2">
         <div class="flex gap-2">
-          <button
-            type="button"
-            class="btn btn-ghost btn-circle">
-            <span class="material-symbols-outlined"> mic </span>
-          </button>
-          <button
-            type="button"
-            class="btn btn-ghost btn-circle">
-            <span class="material-symbols-outlined"> volume_up </span>
-          </button>
+          <span title="Comming soon">
+            <button
+              type="button"
+              disabled
+              class="btn btn-ghost btn-circle">
+              <span class="material-symbols-outlined"> mic </span>
+            </button>
+          </span>
+          <text-to-speech-button
+            @text-to-speech-play="${this.onTextToSpeechPlay}"
+            .isSpeaking="${this.isSpeaking}"
+            .show="${this.currentText !== ''}"></text-to-speech-button>
         </div>
         <span class="text-secondary  text-xs"> ${this.textCount} / 5000</span>
       </div>
