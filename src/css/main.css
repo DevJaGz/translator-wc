@@ -79,7 +79,7 @@ body {
 .google-logo {
   display: flex;
   align-items: center;
-  font-size: 1.7rem;
+  font-size: 2rem;
 
   span:is(:nth-child(1), :nth-child(4)) {
     color: var(--google-blue);

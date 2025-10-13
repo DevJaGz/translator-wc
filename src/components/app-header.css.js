@@ -14,8 +14,8 @@ export const styles = css`
     font-weight: 500;
 
     .header__logo__traductor {
-      font-weight: 500;
-      padding-block-start: 0.25rem;
+      font-weight: 400;
+      padding-block-start: 0.5rem;
     }
   }
 
