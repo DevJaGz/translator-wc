@@ -21,7 +21,10 @@ export class LanguageSelector extends LitElement {
   selectorType: SelectorType = SelectorType.SOURCE;
 
   @state()
-  isLoading = false;
+  isDisabled = false;
+
+  @state()
+  isTranslating = false;
 
   @state()
   list: Language[] = [];
@@ -38,7 +41,12 @@ export class LanguageSelector extends LitElement {
     super.connectedCallback();
     this.updateSelections(this.#service.state);
     this.unsubscribeFn = this.#service.listenChanges((state) => {
-      this.isLoading = state.loading !== null;
+      this.isDisabled = state.loading?.type === 'progress';
+      this.isTranslating = state.loading?.type === 'static';
+      console.log(state.loading?.type, {
+        isDisabled: this.isDisabled,
+        isTranslating: this.isTranslating,
+      });
       this.updateSelections(state);
     });
   }
@@ -104,9 +112,10 @@ export class LanguageSelector extends LitElement {
       <select
         @change="${this.handleSelection}"
         class="select  w-full"
-        style="pointer-events: ${this.isLoading ? 'none' : 'auto'};"
+        style="pointer-events: ${this.isTranslating ? 'none' : 'auto'};"
         .id="${this.selectorType}"
-        .name="${this.selectorType}">
+        .name="${this.selectorType}"
+        .disabled="${this.isDisabled}">
         ${this.list.map(
           (language) =>
             html`<option
