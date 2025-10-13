@@ -1,4 +1,4 @@
-import { LitElement, PropertyValues, html } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { Language, LanguageCode } from '../config';
 import { translatorService } from '../translator.service';

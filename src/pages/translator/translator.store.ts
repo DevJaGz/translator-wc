@@ -29,6 +29,7 @@ export interface TranslatorState {
   translation: string;
   status: Status;
   loading: TranslatorLoading;
+  sourceText: string;
 }
 
 export const INITIAL_STATE: TranslatorState = {
@@ -36,6 +37,7 @@ export const INITIAL_STATE: TranslatorState = {
   targetLanguageCode: LanguageCode.english,
   languages: TranslatorConfig.languages,
   translation: '',
+  sourceText: '',
   status: 'idle',
   loading: null,
 };
@@ -82,6 +84,10 @@ export class TranslatorStoreReducer {
 
   setStatus(status: Status) {
     this.setState({ status });
+  }
+
+  setSourceText(text: string) {
+    this.setState({ sourceText: text });
   }
 
   clean() {

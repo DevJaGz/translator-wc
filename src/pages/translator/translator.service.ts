@@ -62,13 +62,17 @@ class TranslatorService {
         this.#store.setState({
           translation: '',
           loading: null,
+          sourceText: '',
         });
         return;
       }
 
-      this.#store.setStatus('translating');
-      this.#store.setLoading({
-        type: 'static',
+      this.#store.setState({
+        status: 'translating',
+        loading: {
+          type: 'static',
+        },
+        sourceText: text,
       });
 
       const { sourceLanguageCode, targetLanguageCode } =
@@ -104,10 +108,12 @@ class TranslatorService {
 
   setSourceLanguageCode(language: LanguageCode) {
     this.#store.setSourceLanguageCode(language);
+    this.translate(this.#store.state.sourceText);
   }
 
   setTargetLanguageCode(language: LanguageCode) {
     this.#store.setTargetLanguageCode(language);
+    this.translate(this.#store.state.sourceText);
   }
 
   protected async performTranslation(
