@@ -44,14 +44,14 @@ export class TranslatorOutput extends LitElement {
       <div class="flex justify-between items-center flex-wrap gap-2">
         <div class="flex gap-2">
           <button
-            .disabled="${this.translation === ''}"
+            style="display: ${this.translation === '' ? 'none' : 'block'};"
             type="button"
             class="btn btn-ghost btn-circle">
             <span class="material-symbols-outlined"> volume_up </span>
           </button>
         </div>
         <button
-          .disabled="${this.translation === ''}"
+          style="display: ${this.translation === '' ? 'none' : 'block'};"
           @click="${() => this.#service.copyTranslation()}"
           type="button"
           class="btn btn-ghost btn-circle">
