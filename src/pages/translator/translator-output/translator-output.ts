@@ -2,6 +2,7 @@ import { LitElement, PropertyValues, html } from 'lit';
 import { customElement, state } from 'lit/decorators.js';
 import { translatorService } from '../translator.service';
 import { UnsubscribeFn } from '../translator.store';
+import '../text-to-speech-button/text-to-speech-button';
 
 @customElement('translator-output')
 export class TranslatorOutput extends LitElement {
@@ -16,6 +17,15 @@ export class TranslatorOutput extends LitElement {
 
   readonly #service = translatorService;
   unsubscribeFn!: UnsubscribeFn;
+
+  onTextToSpeechPlay(event: CustomEvent<boolean>) {
+    const canPlay = event.detail;
+    if (canPlay) {
+      this.#service.listenTranslation();
+      return;
+    }
+    this.#service.stopListeningTranslation();
+  }
 
   firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
@@ -49,7 +59,12 @@ export class TranslatorOutput extends LitElement {
       >
 
       <div class="flex justify-between items-center flex-wrap gap-2">
-        <div class="flex gap-2">${this.getSpeakingButton()}</div>
+        <div class="flex gap-2">
+          <text-to-speech-button
+            @text-to-speech-play="${this.onTextToSpeechPlay}"
+            .isSpeaking="${this.isSpeaking}"
+            .show="${this.translation !== ''}"></text-to-speech-button>
+        </div>
         <button
           style="visibility: ${this.translation === '' ? 'hidden' : 'visible'};"
           @click="${() => this.#service.copyTranslation()}"
@@ -59,26 +74,5 @@ export class TranslatorOutput extends LitElement {
         </button>
       </div>
     </div>`;
-  }
-
-  getSpeakingButton() {
-    const isSpeaking = this.translation && this.isSpeaking;
-    if (!this.translation){
-      return null;
-    }
-    if (isSpeaking) {
-      return html`<button
-        @click="${() => this.#service.stopListeningTranslation()}"
-        type="button"
-        class="btn btn-ghost btn-circle">
-        <span class="material-symbols-outlined"> Stop </span>
-      </button>`;
-    }
-    return html`<button
-      @click="${() => this.#service.listenTranslation()}"
-      type="button"
-      class="btn btn-ghost btn-circle">
-      <span class="material-symbols-outlined"> volume_up </span>
-    </button>`;
   }
 }
