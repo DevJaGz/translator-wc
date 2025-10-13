@@ -43,10 +43,6 @@ export class LanguageSelector extends LitElement {
     this.unsubscribeFn = this.#service.listenChanges((state) => {
       this.isDisabled = state.loading?.type === 'progress';
       this.isTranslating = state.loading?.type === 'static';
-      console.log(state.loading?.type, {
-        isDisabled: this.isDisabled,
-        isTranslating: this.isTranslating,
-      });
       this.updateSelections(state);
     });
   }

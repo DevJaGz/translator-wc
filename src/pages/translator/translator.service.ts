@@ -156,6 +156,7 @@ class TranslatorService {
             ? second.detectedLanguage
             : first.detectedLanguage;
         sourceLanguageCode = detectedCode as LanguageCode;
+        this.#store.setSourceLanguageCode(sourceLanguageCode);
       }
 
       return {
