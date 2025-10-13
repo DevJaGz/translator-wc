@@ -99,6 +99,13 @@ class TranslatorService {
     }
   }
 
+  swapLanguages() {
+    const { sourceLanguageCode, targetLanguageCode } = this.#store.state;
+    this.#store.setSourceLanguageCode(targetLanguageCode);
+    this.#store.setTargetLanguageCode(sourceLanguageCode);
+    this.translate(this.#store.state.sourceText);
+  }
+
   hasBrowserSupport() {
     return (
       this.#translatorService.isSupported() &&

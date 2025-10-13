@@ -21,7 +21,7 @@ export interface StaticLoading {
 
 export type TranslatorLoading = null | ProgressLoading | StaticLoading;
 
-export type TranslatorError = null | { message: string } ;
+export type TranslatorError = null | { message: string };
 export interface TranslatorState {
   languages: Language[];
   sourceLanguageCode: LanguageCode;

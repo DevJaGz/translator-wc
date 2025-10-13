@@ -10,14 +10,20 @@ import '../../components/app-layout';
 import './translator-input/transator-input';
 import './translator-output/translator-output';
 import './language-selector/language-selector';
+import { UnsubscribeFn } from './translator.store';
+import { LanguageCode } from './config';
 
 @customElement('translator-page')
 export class TranslatorPage extends LitElement {
   @state()
   isReady = true;
 
+  @state()
+  canSwapLanguages = false;
+
   readonly #service = translatorService;
   readonly #pageController = new PageController(this);
+  unsubscribeFn!: UnsubscribeFn;
 
   constructor() {
     super();
@@ -26,6 +32,16 @@ export class TranslatorPage extends LitElement {
       this.#pageController.navigate('/not-supported');
       return;
     }
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.unsubscribeFn = this.#service.listenChanges(
+      (state) => {
+        this.canSwapLanguages = state.sourceLanguageCode !== LanguageCode.auto;
+      },
+      { notifyImmediately: true },
+    );
   }
 
   onLanguageSelected(event: CustomEvent<LanguageSelectorEvent>) {
@@ -61,7 +77,9 @@ export class TranslatorPage extends LitElement {
               .selectorType="${SelectorType.SOURCE}"></language-selector>
             <button
               type="button"
-              class="btn btn-ghost btn-circle">
+              .disabled="${!this.canSwapLanguages}"
+              @click="${() => this.#service.swapLanguages()}"
+              class="btn btn-ghost btn-circle disabled:opacity-30">
               <span class="material-symbols-outlined"> swap_horiz </span>
             </button>
             <language-selector
