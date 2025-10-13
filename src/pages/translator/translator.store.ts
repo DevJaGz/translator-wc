@@ -31,6 +31,7 @@ export interface TranslatorState {
   loading: TranslatorLoading;
   sourceText: string;
   isSpeaking: boolean;
+  navigateOnError: boolean;
 }
 
 export const INITIAL_STATE: TranslatorState = {
@@ -42,6 +43,7 @@ export const INITIAL_STATE: TranslatorState = {
   status: 'idle',
   loading: null,
   isSpeaking: false,
+  navigateOnError: false,
 };
 
 export type Observer = (state: TranslatorState) => void;

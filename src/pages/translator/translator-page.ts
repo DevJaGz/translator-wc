@@ -40,6 +40,9 @@ export class TranslatorPage extends LitElement {
     this.unsubscribeFn = this.#service.listenChanges(
       (state) => {
         this.canSwapLanguages = state.sourceLanguageCode !== LanguageCode.auto;
+        if (state.navigateOnError){
+          this.#pageController.navigate('/not-supported');
+        }
       },
       { notifyImmediately: true },
     );

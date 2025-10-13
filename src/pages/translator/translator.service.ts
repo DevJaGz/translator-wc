@@ -139,20 +139,18 @@ class TranslatorService {
 
   async listenTranslation(text: string, langugeCode?: LanguageCode) {
     try {
-      this.#textToSpeechService.speak(text,
-        {
-          langugeCode,
-          onStart: () => {
-            this.#store.setIsSpeaking(true);
-          },
-          onEnd: () => {
-            this.#store.setIsSpeaking(false);
-          },
-          onError: () => {
-            this.#store.setIsSpeaking(false);
-          },
-        }
-      );
+      this.#textToSpeechService.speak(text, {
+        langugeCode,
+        onStart: () => {
+          this.#store.setIsSpeaking(true);
+        },
+        onEnd: () => {
+          this.#store.setIsSpeaking(false);
+        },
+        onError: () => {
+          this.#store.setIsSpeaking(false);
+        },
+      });
     } catch (error) {
       this.#errorService.notifyError(
         error instanceof TextToSpeechError ? error : new UnknownError(),
@@ -206,38 +204,54 @@ class TranslatorService {
   }
 
   protected async initializeLanguageDetector() {
-    await this.#languageDetectorService.initialize({
-      notifyProgress: (event) => {
-        this.#store.setState({
-          loading: {
-            type: 'progress',
-            name: 'LanguageDetector',
-            progress: event.loaded,
-          },
-          status: 'downloading',
-        });
-      },
-    });
+    try {
+      await this.#languageDetectorService.initialize({
+        notifyProgress: (event) => {
+          this.#store.setState({
+            loading: {
+              type: 'progress',
+              name: 'LanguageDetector',
+              progress: event.loaded,
+            },
+            status: 'downloading',
+          });
+        },
+      });
+    } catch (error) {
+      this.#store.setState({
+        status: 'error',
+        navigateOnError: true,
+        loading: null,
+      });
+    }
   }
 
   protected async initializeTranslator(
     sourceLanguage: LanguageCode,
     targetLanguage: LanguageCode,
   ) {
-    await this.#translatorService.initialize({
-      sourceLanguage,
-      targetLanguage,
-      notifyProgress: (event) => {
-        this.#store.setState({
-          loading: {
-            type: 'progress',
-            name: 'Translator',
-            progress: event.loaded,
-          },
-          status: 'downloading',
-        });
-      },
-    });
+    try {
+      await this.#translatorService.initialize({
+        sourceLanguage,
+        targetLanguage,
+        notifyProgress: (event) => {
+          this.#store.setState({
+            loading: {
+              type: 'progress',
+              name: 'Translator',
+              progress: event.loaded,
+            },
+            status: 'downloading',
+          });
+        },
+      });
+    } catch (error) {
+      this.#store.setState({
+        status: 'error',
+        navigateOnError: true,
+        loading: null,
+      });
+    }
   }
 }
 
